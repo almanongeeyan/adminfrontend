@@ -113,7 +113,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Create User Account</span></a>
+                                <a href="createrole.php" class="nk-menu-link"><span class="nk-menu-text">Create User Account</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Assign Custom Permissions</span></a>
