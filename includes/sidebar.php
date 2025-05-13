@@ -36,7 +36,7 @@
                                 <a href="staffdirectories.php" class="nk-menu-link"><span class="nk-menu-text">Staff Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Assign Services</span></a>
+                                <a href="staffservices.php" class="nk-menu-link"><span class="nk-menu-text">Assign Services</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="staffschedule.php" class="nk-menu-link"><span class="nk-menu-text">Staff Schedule</span></a>
@@ -67,9 +67,6 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="servicedirectories.php" class="nk-menu-link"><span class="nk-menu-text">Service Directory</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Service Categories</span></a>
                             </li>
                         </ul>
                     </li>
@@ -116,7 +113,7 @@
                                 <a href="createrole.php" class="nk-menu-link"><span class="nk-menu-text">Create User Account</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Assign Custom Permissions</span></a>
+                                <a href="assignrole.php" class="nk-menu-link"><span class="nk-menu-text">Assign Custom Permissions</span></a>
                             </li>
                         </ul>
                     </li>
