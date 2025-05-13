@@ -51,12 +51,16 @@
             border-bottom: none;
         }
         .action-buttons button {
-            padding: 8px 12px;
+            padding: 10px 16px;
             margin-right: 5px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         .action-buttons button.edit {
             background-color: #007bff;
@@ -66,6 +70,12 @@
             background-color: #dc3545;
             color: white;
         }
+        .action-buttons button.edit:hover {
+            background-color: #0056b3;
+        }
+        .action-buttons button.delete:hover {
+            background-color: #c82333;
+        }
         .swal2-input, .swal2-select {
             margin: 0.5em 0;
             width: 100%;
@@ -73,6 +83,33 @@
         .swal2-datepicker {
             margin: 0.5em 0;
             width: 100%;
+        }
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #0056b3;
+            border-color: #004080;
+        }
+
+        .btn-primary:focus, .btn-primary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+
+        .btn-primary.disabled, .btn-primary:disabled {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:active, .btn-primary.active {
+            color: #fff;
+            background-color: #0056b3;
+            border-color: #004080;
         }
     </style>
 </head>
@@ -150,8 +187,8 @@
                                                 echo '<td>' . htmlspecialchars($customer['date_of_booking'], ENT_QUOTES) . '</td>';
                                                 echo '<td>' . htmlspecialchars($customer['payment'], ENT_QUOTES) . '</td>';
                                                 echo '<td class="action-buttons">';
-                                                echo '<button class="edit" onclick="editCustomer(' . $customer['id'] . ')"><i class="fa-solid fa-pen-to-square"></i></button>';
-                                                echo '<button class="delete" onclick="deleteCustomer(' . $customer['id'] . ', \'' . htmlspecialchars($customer['name'], ENT_QUOTES) . '\')"><i class="fa-solid fa-trash-can"></i></button>';
+                                                echo '<button class="edit" onclick="editCustomer(' . $customer['id'] . ')">Edit</button>';
+                                                echo '<button class="delete" onclick="deleteCustomer(' . $customer['id'] . ', \'' . htmlspecialchars($customer['name'], ENT_QUOTES) . '\')">Delete</button>';
                                                 echo '</td>';
                                                 echo '</tr>';
                                             }
@@ -173,84 +210,79 @@
     <script src="js/js3.js"></script>
     <script>
         function addCustomer() {
-            Swal.fire({
-                title: 'Add Customer',
-                html: `<input id="name" class="swal2-input" placeholder="Name">
-                       <input id="contact_number" class="swal2-input" placeholder="Contact Number">
-                       <input id="email" class="swal2-input" placeholder="Email">
-                       <select id="type_of_booking" class="swal2-select">
-                           <option value="">Select Booking Type</option>
-                           <option value="Online">Online</option>
-                           <option value="Walk-in">Walk-in</option>
-                       </select>
-                       <input id="date_of_booking" class="swal2-datepicker" placeholder="Date of Booking" readonly>
-                       <input id="payment" class="swal2-input" placeholder="Payment">`,
-                preConfirm: () => {
-                    return {
-                        name: document.getElementById('name').value,
-                        contact_number: document.getElementById('contact_number').value,
-                        email: document.getElementById('email').value,
-                        type_of_booking: document.getElementById('type_of_booking').value,
-                        date_of_booking: document.getElementById('date_of_booking').value,
-                        payment: document.getElementById('payment').value,
-                    };
-                },
-                didOpen: () => {
-                    // Initialize the datepicker
-                    $('#date_of_booking').datepicker({
-                        format: 'yyyy-mm-dd',
-                        autoclose: true,
-                        todayHighlight: true,
-                    });
-                },
-                showCancelButton: true,
-                confirmButtonText: 'Add',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const customerData = result.value;
-                    if (customerData.name && customerData.contact_number && customerData.email && customerData.type_of_booking && customerData.date_of_booking && customerData.payment) {
-                        // In a real application, you would make an AJAX call here
-                        // to add the customer to the database.
-                        console.log('Customer Data:', customerData);
-
-                        Swal.fire(
-                            'Customer Added!',
-                            'The customer has been added successfully.',
-                            'success'
-                        );
-
-                        // For demonstration, let's add the new customer to the table (without AJAX)
-                        const newCustomerRow = document.createElement('tr');
-                        newCustomerRow.innerHTML = `
-                            <td>${customerData.name}</td>
-                            <td>${customerData.contact_number}</td>
-                            <td>${customerData.email}</td>
-                            <td>${customerData.type_of_booking}</td>
-                            <td>${customerData.date_of_booking}</td>
-                            <td>${customerData.payment}</td>
-                            <td class="action-buttons">
-                                <button class="edit" onclick="editCustomer(0)"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="delete" onclick="deleteCustomer(0, '${customerData.name}')"><i class="fa-solid fa-trash-can"></i></button>
-                            </td>
-                        `;
-                        document.getElementById('customer-table-body').appendChild(newCustomerRow);
-                         // Clear the datepicker
-                        $('#date_of_booking').datepicker('destroy');
-                    } else {
-                        Swal.fire(
-                            'Error',
-                            'Please fill in all the fields.',
-                            'error'
-                        );
-                         $('#date_of_booking').datepicker('destroy');
-                    }
-                } else {
-                     $('#date_of_booking').datepicker('destroy');
-                }
+    Swal.fire({
+        title: 'Add Customer',
+        html: `<input id="name" class="swal2-input" placeholder="Name">
+               <input id="contact_number" class="swal2-input" placeholder="Contact Number">
+               <input id="email" class="swal2-input" placeholder="Email">
+               <select id="type_of_booking" class="swal2-select">
+                   <option value="">Select Booking Type</option>
+                   <option value="Online">Online</option>
+                   <option value="Walk-in">Walk-in</option>
+               </select>
+               <input id="date_of_booking" class="swal2-datepicker" placeholder="Date of Booking" readonly>
+               <input id="payment" class="swal2-input" placeholder="Payment">`,
+        preConfirm: () => {
+            return {
+                name: document.getElementById('name').value,
+                contact_number: document.getElementById('contact_number').value,
+                email: document.getElementById('email').value,
+                type_of_booking: document.getElementById('type_of_booking').value,
+                date_of_booking: document.getElementById('date_of_booking').value,
+                payment: document.getElementById('payment').value,
+            };
+        },
+        didOpen: () => {
+            // Initialize the datepicker *after* the modal is open
+            $('#date_of_booking').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
             });
-        }
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const customerData = result.value;
+            if (customerData.name && customerData.contact_number && customerData.email && customerData.type_of_booking && customerData.date_of_booking && customerData.payment) {
+                // In a real application, you would make an AJAX call here
+                // to add the customer to the database.
+                console.log('Customer Data:', customerData);
 
+                Swal.fire(
+                    'Customer Added!',
+                    'The customer has been added successfully.',
+                    'success'
+                );
+
+                // For demonstration, let's add the new customer to the table (without AJAX)
+                const newCustomerRow = document.createElement('tr');
+                newCustomerRow.innerHTML = `
+                    <td>${customerData.name}</td>
+                    <td>${customerData.contact_number}</td>
+                    <td>${customerData.email}</td>
+                    <td>${customerData.type_of_booking}</td>
+                    <td>${customerData.date_of_booking}</td>
+                    <td>${customerData.payment}</td>
+                    <td class="action-buttons">
+                        <button class="edit" onclick="editCustomer(0)">Edit</button>
+                        <button class="delete" onclick="deleteCustomer(0, '${customerData.name}')">Delete</button>
+                    </td>
+                `;
+                document.getElementById('customer-table-body').appendChild(newCustomerRow);
+                 // Clear the datepicker (no need to destroy and re-initialize here)
+            } else {
+                Swal.fire(
+                    'Error',
+                    'Please fill in all the fields.',
+                    'error'
+                );
+            }
+        }
+    });
+}
 
 
         function editCustomer(id) {
@@ -324,8 +356,8 @@
                                 <td>${updatedCustomerData.date_of_booking}</td>
                                 <td>${updatedCustomerData.payment}</td>
                                 <td class="action-buttons">
-                                    <button class="edit" onclick="editCustomer(${id})"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button class="delete" onclick="deleteCustomer(${id}, '${updatedCustomerData.name}')"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button class="edit" onclick="editCustomer(${id})">Edit</button>
+                                    <button class="delete" onclick="deleteCustomer(${id}, '${updatedCustomerData.name}')">Delete</button>
                                 </td>
                             `;
                         }

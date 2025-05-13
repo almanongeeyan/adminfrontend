@@ -56,7 +56,7 @@
                                 <a href="customerdirectories.php" class="nk-menu-link"><span class="nk-menu-text">Customer Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Customer Booking History</span></a>
+                                <a href="customerhistory.php" class="nk-menu-link"><span class="nk-menu-text">Customer Booking History</span></a>
                             </li>
                         </ul>
                     </li>
@@ -66,7 +66,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Service Directory</span></a>
+                                <a href="servicedirectories.php" class="nk-menu-link"><span class="nk-menu-text">Service Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Service Categories</span></a>
@@ -79,10 +79,10 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Branch Directory</span></a>
+                                <a href="branchdirectories.php" class="nk-menu-link"><span class="nk-menu-text">Branch Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Assign Staff & Services to Branch</span></a>
+                                <a href="branchstaff.php" class="nk-menu-link"><span class="nk-menu-text">Assign Staff & Services to Branch</span></a>
                             </li>
                         </ul>
                     </li>
