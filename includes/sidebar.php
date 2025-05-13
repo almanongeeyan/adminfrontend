@@ -33,13 +33,13 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Staff Directory</span></a>
+                                <a href="staffdirectories.php" class="nk-menu-link"><span class="nk-menu-text">Staff Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Assign Services</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Staff Schedule</span></a>
+                                <a href="staffschedule.php" class="nk-menu-link"><span class="nk-menu-text">Staff Schedule</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Staff Commission Rate</span></a>
