@@ -92,13 +92,13 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Booking Reports</span></a>
+                                <a href="bookingreport.php" class="nk-menu-link"><span class="nk-menu-text">Booking Reports</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Sales Reports</span></a>
+                                <a href="salesreport.php" class="nk-menu-link"><span class="nk-menu-text">Sales Reports</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Customer Reports</span></a>
+                                <a href="customerreport.php" class="nk-menu-link"><span class="nk-menu-text">Customer Reports</span></a>
                             </li>
                         </ul>
                     </li>
