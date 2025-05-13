@@ -42,7 +42,7 @@
                                 <a href="staffschedule.php" class="nk-menu-link"><span class="nk-menu-text">Staff Schedule</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Staff Commission Rate</span></a>
+                                <a href="staffrate.php" class="nk-menu-link"><span class="nk-menu-text">Staff Commission Rate</span></a>
                             </li>
                         </ul>
                     </li>
@@ -53,7 +53,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Customer Directory</span></a>
+                                <a href="customerdirectories.php" class="nk-menu-link"><span class="nk-menu-text">Customer Directory</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Customer Booking History</span></a>

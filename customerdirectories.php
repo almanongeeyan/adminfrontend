@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="author" content="Softnio" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers." />
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <title>Booking System | Admin | Customer Directories</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/design.css" />
+    <link id="skin-default" rel="stylesheet" href="../assets/css/themee1e3.css?ver=3.2.4" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91615293-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "UA-91615293-4");
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <style>
+        .customer-table-wrapper {
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        .customer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .customer-table th, .customer-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .customer-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .customer-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .action-buttons button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .action-buttons button.edit {
+            background-color: #007bff;
+            color: white;
+        }
+        .action-buttons button.delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .swal2-input, .swal2-select {
+            margin: 0.5em 0;
+            width: 100%;
+        }
+        .swal2-datepicker {
+            margin: 0.5em 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="nk-body ui-rounder has-sidebar ui-light">
+    <div class="nk-app-root">
+        <div class="nk-main">
+            <?php include 'includes/sidebar.php'; ?>
+            <div class="nk-wrap">
+                <div class="nk-header is-light nk-header-fixed is-light">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-header-wrap">
+                            <div class="nk-menu-trigger d-xl-none ms-n1 me-3">
+                                <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><i class="fa-solid fa-bars"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">Customer Directories</h3>
+                                    </div>
+                                    <div class="nk-block-head-content">
+                                        <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nk-block">
+                                <div class="customer-table-wrapper">
+                                    <table class="customer-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Contact Number</th>
+                                                <th>Email</th>
+                                                <th>Type of Booking</th>
+                                                <th>Date of Booking</th>
+                                                <th>Payment</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="customer-table-body">
+                                            <?php
+                                            // Example customer data (replace with your database fetch)
+                                            $customers = [
+                                                [
+                                                    'id' => 1,
+                                                    'name' => 'John Doe',
+                                                    'contact_number' => '123-456-7890',
+                                                    'email' => 'john.doe@example.com',
+                                                    'type_of_booking' => 'Online',
+                                                    'date_of_booking' => '2024-07-28',
+                                                    'payment' => '$100',
+                                                ],
+                                                [
+                                                    'id' => 2,
+                                                    'name' => 'Jane Smith',
+                                                    'contact_number' => '987-654-3210',
+                                                    'email' => 'jane.smith@example.com',
+                                                    'type_of_booking' => 'Walk-in',
+                                                    'date_of_booking' => '2024-07-29',
+                                                    'payment' => '$50',
+                                                ],
+                                            ];
+
+                                            foreach ($customers as $customer) {
+                                                echo '<tr id="customer-' . $customer['id'] . '">';
+                                                echo '<td>' . htmlspecialchars($customer['name'], ENT_QUOTES) . '</td>';
+                                                echo '<td>' . htmlspecialchars($customer['contact_number'], ENT_QUOTES) . '</td>';
+                                                echo '<td>' . htmlspecialchars($customer['email'], ENT_QUOTES) . '</td>';
+                                                echo '<td>' . htmlspecialchars($customer['type_of_booking'], ENT_QUOTES) . '</td>';
+                                                echo '<td>' . htmlspecialchars($customer['date_of_booking'], ENT_QUOTES) . '</td>';
+                                                echo '<td>' . htmlspecialchars($customer['payment'], ENT_QUOTES) . '</td>';
+                                                echo '<td class="action-buttons">';
+                                                echo '<button class="edit" onclick="editCustomer(' . $customer['id'] . ')"><i class="fa-solid fa-pen-to-square"></i></button>';
+                                                echo '<button class="delete" onclick="deleteCustomer(' . $customer['id'] . ', \'' . htmlspecialchars($customer['name'], ENT_QUOTES) . '\')"><i class="fa-solid fa-trash-can"></i></button>';
+                                                echo '</td>';
+                                                echo '</tr>';
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php include 'includes/footer.php'; ?>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/js1.js"></script>
+    <script src="js/js2.js"></script>
+    <script src="js/js3.js"></script>
+    <script>
+        function addCustomer() {
+            Swal.fire({
+                title: 'Add Customer',
+                html: `<input id="name" class="swal2-input" placeholder="Name">
+                       <input id="contact_number" class="swal2-input" placeholder="Contact Number">
+                       <input id="email" class="swal2-input" placeholder="Email">
+                       <select id="type_of_booking" class="swal2-select">
+                           <option value="">Select Booking Type</option>
+                           <option value="Online">Online</option>
+                           <option value="Walk-in">Walk-in</option>
+                       </select>
+                       <input id="date_of_booking" class="swal2-datepicker" placeholder="Date of Booking" readonly>
+                       <input id="payment" class="swal2-input" placeholder="Payment">`,
+                preConfirm: () => {
+                    return {
+                        name: document.getElementById('name').value,
+                        contact_number: document.getElementById('contact_number').value,
+                        email: document.getElementById('email').value,
+                        type_of_booking: document.getElementById('type_of_booking').value,
+                        date_of_booking: document.getElementById('date_of_booking').value,
+                        payment: document.getElementById('payment').value,
+                    };
+                },
+                didOpen: () => {
+                    // Initialize the datepicker
+                    $('#date_of_booking').datepicker({
+                        format: 'yyyy-mm-dd',
+                        autoclose: true,
+                        todayHighlight: true,
+                    });
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Add',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const customerData = result.value;
+                    if (customerData.name && customerData.contact_number && customerData.email && customerData.type_of_booking && customerData.date_of_booking && customerData.payment) {
+                        // In a real application, you would make an AJAX call here
+                        // to add the customer to the database.
+                        console.log('Customer Data:', customerData);
+
+                        Swal.fire(
+                            'Customer Added!',
+                            'The customer has been added successfully.',
+                            'success'
+                        );
+
+                        // For demonstration, let's add the new customer to the table (without AJAX)
+                        const newCustomerRow = document.createElement('tr');
+                        newCustomerRow.innerHTML = `
+                            <td>${customerData.name}</td>
+                            <td>${customerData.contact_number}</td>
+                            <td>${customerData.email}</td>
+                            <td>${customerData.type_of_booking}</td>
+                            <td>${customerData.date_of_booking}</td>
+                            <td>${customerData.payment}</td>
+                            <td class="action-buttons">
+                                <button class="edit" onclick="editCustomer(0)"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="delete" onclick="deleteCustomer(0, '${customerData.name}')"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        `;
+                        document.getElementById('customer-table-body').appendChild(newCustomerRow);
+                         // Clear the datepicker
+                        $('#date_of_booking').datepicker('destroy');
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            'Please fill in all the fields.',
+                            'error'
+                        );
+                         $('#date_of_booking').datepicker('destroy');
+                    }
+                } else {
+                     $('#date_of_booking').datepicker('destroy');
+                }
+            });
+        }
+
+
+
+        function editCustomer(id) {
+            // In a real application, you would fetch the customer data by ID here
+            // and pre-populate the SweetAlert form with the existing data.
+            // For demonstration, we'll use placeholder data.
+            const customerData = {
+                name: 'John Doe',
+                contact_number: '123-456-7890',
+                email: 'john.doe@example.com',
+                type_of_booking: 'Online',
+                date_of_booking: '2024-07-28',
+                payment: '$100',
+            };
+
+            Swal.fire({
+                title: 'Edit Customer',
+                html: `<input id="name" class="swal2-input" placeholder="Name" value="${customerData.name}">
+                       <input id="contact_number" class="swal2-input" placeholder="Contact Number" value="${customerData.contact_number}">
+                       <input id="email" class="swal2-input" placeholder="Email" value="${customerData.email}">
+                       <select id="type_of_booking" class="swal2-select">
+                           <option value="">Select Booking Type</option>
+                           <option value="Online" ${customerData.type_of_booking === 'Online' ? 'selected' : ''}>Online</option>
+                           <option value="Walk-in" ${customerData.type_of_booking === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
+                       </select>
+                       <input id="date_of_booking_edit" class="swal2-datepicker" placeholder="Date of Booking" value="${customerData.date_of_booking}" readonly>
+                       <input id="payment" class="swal2-input" placeholder="Payment" value="${customerData.payment}">`,
+                preConfirm: () => {
+                    return {
+                        name: document.getElementById('name').value,
+                        contact_number: document.getElementById('contact_number').value,
+                        email: document.getElementById('email').value,
+                        type_of_booking: document.getElementById('type_of_booking').value,
+                        date_of_booking: document.getElementById('date_of_booking_edit').value,
+                        payment: document.getElementById('payment').value,
+                    };
+                },
+                didOpen: () => {
+                    // Initialize the datepicker
+                    $('#date_of_booking_edit').datepicker({
+                        format: 'yyyy-mm-dd',
+                        autoclose: true,
+                        todayHighlight: true,
+                    });
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const updatedCustomerData = result.value;
+                    if (updatedCustomerData.name && updatedCustomerData.contact_number && updatedCustomerData.email && updatedCustomerData.type_of_booking && updatedCustomerData.date_of_booking && updatedCustomerData.payment) {
+                        // In a real application, you would make an AJAX call here
+                        // to update the customer data in the database.
+                        console.log('Updated Customer Data:', updatedCustomerData);
+
+                        Swal.fire(
+                            'Customer Updated!',
+                            'The customer details have been updated.',
+                            'success'
+                        );
+
+                        // For demonstration, let's update the table row (without AJAX)
+                        const rowToUpdate = document.getElementById(`customer-${id}`); // Use the id here
+                        if (rowToUpdate) {
+                            rowToUpdate.innerHTML = `
+                                <td>${updatedCustomerData.name}</td>
+                                <td>${updatedCustomerData.contact_number}</td>
+                                <td>${updatedCustomerData.email}</td>
+                                <td>${updatedCustomerData.type_of_booking}</td>
+                                <td>${updatedCustomerData.date_of_booking}</td>
+                                <td>${updatedCustomerData.payment}</td>
+                                <td class="action-buttons">
+                                    <button class="edit" onclick="editCustomer(${id})"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button class="delete" onclick="deleteCustomer(${id}, '${updatedCustomerData.name}')"><i class="fa-solid fa-trash-can"></i></button>
+                                </td>
+                            `;
+                        }
+                         $('#date_of_booking_edit').datepicker('destroy');
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            'Please fill in all the fields.',
+                            'error'
+                        );
+                         $('#date_of_booking_edit').datepicker('destroy');
+                    }
+                } else {
+                     $('#date_of_booking_edit').datepicker('destroy');
+                }
+            });
+        }
+
+        function deleteCustomer(id, name) {
+            Swal.fire({
+                title: 'Delete Customer',
+                text: `Are you sure you want to delete ${name}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // In a real application, you would make an AJAX call here
+                    // to delete the customer from the database.
+                    console.log('Delete Customer ID:', id);
+
+                    Swal.fire(
+                        'Customer Deleted!',
+                        `The customer ${name} has been deleted.`,
+                        'success'
+                    );
+
+                    // For demonstration, let's remove the table row (without AJAX)
+                    const rowToDelete = document.getElementById(`customer-${id}`);
+                    if (rowToDelete) {
+                        rowToDelete.remove();
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

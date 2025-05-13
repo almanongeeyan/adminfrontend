@@ -164,18 +164,47 @@
             Swal.fire({
                 title: 'Set Availability for ' + name,
                 html:
-                    '<input id="swal-input-days" class="swal2-input" placeholder="Days (e.g., Mon, Tue, Wed)">' +
+                    '<div style="display: flex; justify-content: space-around; margin-bottom: 10px;">' +
+                        '<div>M<input type="checkbox" id="availability-mon"></div>' +
+                        '<div>T<input type="checkbox" id="availability-tue"></div>' +
+                        '<div>W<input type="checkbox" id="availability-wed"></div>' +
+                        '<div>TH<input type="checkbox" id="availability-thu"></div>' +
+                        '<div>F<input type="checkbox" id="availability-fri"></div>' +
+                        '<div>S<input type="checkbox" id="availability-sat"></div>' +
+                        '<div>S<input type="checkbox" id="availability-sun"></div>' +
+                    '</div>' +
                     '<input id="swal-input-times" class="swal2-input" placeholder="Times (e.g., 9am-5pm)">',
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Save Availability',
                 preConfirm: () => {
-                    const days = Swal.getPopup().querySelector('#swal-input-days').value;
+                    const mon = document.getElementById('availability-mon').checked;
+                    const tue = document.getElementById('availability-tue').checked;
+                    const wed = document.getElementById('availability-wed').checked;
+                    const thu = document.getElementById('availability-thu').checked;
+                    const fri = document.getElementById('availability-fri').checked;
+                    const sat = document.getElementById('availability-sat').checked;
+                    const sun = document.getElementById('availability-sun').checked;
                     const times = Swal.getPopup().querySelector('#swal-input-times').value;
-                    if (!days || !times) {
-                        Swal.showValidationMessage(`Please fill in all fields`);
+
+                    const days = {
+                        mon: mon,
+                        tue: tue,
+                        wed: wed,
+                        thu: thu,
+                        fri: fri,
+                        sat: sat,
+                        sun: sun,
+                    };
+                    const daysString = Object.entries(days)
+                      .filter(([day, isAvailable]) => isAvailable)
+                      .map(([day]) => day.toUpperCase())
+                      .join(', ');
+
+                    if (!daysString || !times) {
+                        Swal.showValidationMessage(`Please select available days and times`);
                     }
-                    return { days: days, times: times };
+                    return { days: daysString, times: times };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -195,28 +224,26 @@
                 title: 'Set Breaks for ' + name,
                 html:
                     '<input id="swal-input-break-start" class="swal2-input" placeholder="Start Time (e.g., 1pm)">' +
-                    '<input id="swal-input-break-end" class="swal2-input" placeholder="End Time (e.g., 2pm)">' +
-                    '<input id="swal-input-break-duration" class="swal2-input" placeholder="Duration (e.g., 1 hour)">',
+                    '<input id="swal-input-break-end" class="swal2-input" placeholder="End Time (e.g., 2pm)">',
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Save Breaks',
                 preConfirm: () => {
                     const start = Swal.getPopup().querySelector('#swal-input-break-start').value;
                     const end = Swal.getPopup().querySelector('#swal-input-break-end').value;
-                    const duration = Swal.getPopup().querySelector('#swal-input-break-duration').value;
-                    if (!start || !end || !duration) {
+                    if (!start || !end) {
                         Swal.showValidationMessage(`Please fill in all fields`);
                     }
-                    return { start: start, end: end, duration: duration };
+                    return { start: start, end: end };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire(
                         'Breaks Set!',
-                        `Breaks for ${name} have been set from ${result.value.start} to ${result.value.end} (Duration: ${result.value.duration}).`,
+                        `Breaks for ${name} have been set from ${result.value.start} to ${result.value.end}.`,
                         'success'
                     );
-                    console.log('Breaks Data:', { id: id, name: name, start: result.value.start, end: result.value.end, duration: result.value.duration });
+                    console.log('Breaks Data:', { id: id, name: name, start: result.value.start, end: result.value.end});
                     // In a real application, send this data to the server to update the database
                 }
             });
