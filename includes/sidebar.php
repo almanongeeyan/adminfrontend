@@ -102,21 +102,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                    <li class="nk-menu-item">
+                        <a href="invoice.php" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="bi bi-receipt"></i></span><span class="nk-menu-text">Invoice and Receipts</span>
                         </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="document-saved.html" class="nk-menu-link"><span class="nk-menu-text">Booking Invoice</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Print / Download / Email Receipt</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="document-drafts.html" class="nk-menu-link"><span class="nk-menu-text">Manual Payment Entry</span></a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
