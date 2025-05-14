@@ -90,8 +90,38 @@
             background-color: #0056b3;
             border-color: #004080;
         }
+        .branch-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 0.9rem;
+        }
+        .search-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
         .add-branch-button {
-            margin-left: auto;
+            /* Removed margin-left: auto; */
         }
     </style>
 </head>
@@ -118,11 +148,18 @@
                                         <h3 class="nk-block-title page-title">Branch Directories</h3>
                                     </div>
                                     <div class="nk-block-head-content">
-                                        <button class="btn btn-primary add-branch-button" onclick="addBranch()">Add Branch</button>
-                                    </div>
+                                        </div>
                                 </div>
                             </div>
                             <div class="nk-block">
+                                <div class="branch-header">
+                                    <div class="search-container">
+                                        <input type="text" id="search-input" class="search-input"
+                                            placeholder="Search by Branch Name">
+                                        <button class="search-button" onclick="searchBranches()">Search</button>
+                                    </div>
+                                    <button class="btn btn-primary add-branch-button" onclick="addBranch()">Add Branch</button>
+                                </div>
                                 <div class="branch-table-wrapper">
                                     <table class="branch-table">
                                         <thead>
@@ -199,46 +236,24 @@
                 if (result.isConfirmed) {
                     const branchData = result.value;
                     if (branchData.name && branchData.address && branchData.contact_number) {
-                        // In a real application, you would make an AJAX call here
-                        // to add the branch to the database.
                         console.log('Branch Data:', branchData);
-
                         Swal.fire(
                             'Branch Added!',
                             'The branch has been added successfully.',
                             'success'
                         );
-
-                        // For demonstration, let's add the new branch to the table (without AJAX)
                         const newBranchRow = document.createElement('tr');
                         newBranchRow.innerHTML = `
                             <td>${branchData.name}</td>
                             <td>${branchData.address}</td>
                             <td>${branchData.contact_number}</td>
                             <td class="action-buttons">
-                                <button class="edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="delete"><i class="bi bi-trash3"></i></button>
+                                <button class="edit" onclick="editBranch(${Date.now()})"><i class="bi bi-pencil-square"></i></button>
+                                <button class="delete" onclick="deleteBranch(${Date.now()}, '${branchData.name}')"><i class="bi bi-trash3"></i></button>
                             </td>
                         `;
+                        newBranchRow.id = `branch-${Date.now()}`; // Assign a unique ID
                         document.getElementById('branch-table-body').appendChild(newBranchRow);
-                        // Get the newly added row
-                        const newRow = document.getElementById('branch-table-body').lastElementChild;
-
-                        // Find the edit and delete buttons within the new row.
-                        const editButton = newRow.querySelector('.edit');
-                        const deleteButton = newRow.querySelector('.delete');
-
-                        // Attach the event listeners.  Pass the new row's ID.
-                        editButton.addEventListener('click', () => {
-                            const rowId = newRow.rowIndex;
-                            editBranch(rowId);
-                        });
-                        deleteButton.addEventListener('click', () => {
-                             const rowId = newRow.rowIndex;
-                            const branchName = branchData.name;
-                            deleteBranch(rowId, branchName);
-                        });
-
                     } else {
                         Swal.fire(
                             'Error',
@@ -252,7 +267,7 @@
 
         function editBranch(id) {
             const rowToEdit = document.getElementById(`branch-${id}`);
-             if (!rowToEdit) {
+            if (!rowToEdit) {
                 Swal.fire('Error', 'Branch to edit not found!', 'error');
                 return;
             }
@@ -280,17 +295,12 @@
                 if (result.isConfirmed) {
                     const updatedBranchData = result.value;
                     if (updatedBranchData.name && updatedBranchData.address && updatedBranchData.contact_number) {
-                        // In a real application, you would make an AJAX call here
-                        // to update the branch data in the database.
                         console.log('Updated Branch Data:', updatedBranchData);
-
                         Swal.fire(
                             'Branch Updated!',
                             'The branch details have been updated.',
                             'success'
                         );
-
-                        // Update the table row
                         rowToEdit.cells[0].textContent = updatedBranchData.name;
                         rowToEdit.cells[1].textContent = updatedBranchData.address;
                         rowToEdit.cells[2].textContent = updatedBranchData.contact_number;
@@ -316,23 +326,39 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // In a real application, you would make an AJAX call here
-                    // to delete the branch from the database.
                     console.log('Delete Branch ID:', id);
-
                     Swal.fire(
                         'Branch Deleted!',
                         `The branch ${name} has been deleted.`,
                         'success'
                     );
-
-                    // For demonstration, let's remove the table row (without AJAX)
                     const rowToDelete = document.getElementById(`branch-${id}`);
                     if (rowToDelete) {
                         rowToDelete.remove();
                     }
                 }
             });
+        }
+
+        function searchBranches() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const tableRows = document.getElementById('branch-table-body').getElementsByTagName('tr');
+
+            for (let i = 0; i < tableRows.length; i++) {
+                const branchNameCell = tableRows[i].getElementsByTagName('td')[0]; // Index 0 for Branch Name
+                const branchAddressCell = tableRows[i].getElementsByTagName('td')[1]; // Index 1 for Address
+                const branchContactCell = tableRows[i].getElementsByTagName('td')[2]; // Index 2 for Contact Number
+
+                const nameMatch = branchNameCell && branchNameCell.textContent.toLowerCase().includes(searchTerm);
+                const addressMatch = branchAddressCell && branchAddressCell.textContent.toLowerCase().includes(searchTerm);
+                const contactMatch = branchContactCell && branchContactCell.textContent.toLowerCase().includes(searchTerm);
+
+                if (nameMatch || addressMatch || contactMatch) {
+                    tableRows[i].style.display = ''; // Show the row if any column matches
+                } else {
+                    tableRows[i].style.display = 'none'; // Hide the row if no column matches
+                }
+            }
         }
     </script>
 </body>

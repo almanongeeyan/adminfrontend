@@ -10,6 +10,42 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <style>
+        .history-header {
+            display: flex;
+            justify-content: flex-start; /* Align items to the left */
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px; /* Add some spacing if you have other elements in the header */
+        }
+
+        .search-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 250px; /* Adjust width as needed */
+            font-size: 0.9rem;
+        }
+
+        .search-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
         .history-table-wrapper {
             margin-top: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -92,35 +128,6 @@
             background-color: #0056b3;
             border-color: #004080;
         }
-
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .search-input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 10px;
-            width: 200px;
-            font-size: 0.9rem;
-        }
-
-        .search-button {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .search-button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body class="nk-body ui-rounder has-sidebar ui-light">
@@ -147,15 +154,18 @@
                                         <h3 class="nk-block-title page-title">Customer Booking History</h3>
                                     </div>
                                     <div class="nk-block-head-content">
-                                        </div>
-                                </div>
-                                <div class="search-container">
-                                    <input type="text" id="search-input" class="search-input"
-                                        placeholder="Search by Customer Name...">
-                                    <button class="search-button" onclick="searchHistory()">Search</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="nk-block">
+                                <div class="history-header">
+                                    <div class="search-container">
+                                        <input type="text" id="search-input" class="search-input"
+                                            placeholder="Search by Customer Name...">
+                                    </div>
+                                    <div>
+                                        </div>
+                                </div>
                                 <div class="history-table-wrapper">
                                     <table class="history-table">
                                         <thead>
@@ -189,10 +199,26 @@
                                                     'amount' => '$120.00',
                                                     'status' => 'Pending',
                                                 ],
+                                                [
+                                                    'id' => 103,
+                                                    'customer_name' => 'Charlie Brown',
+                                                    'type_of_booking' => 'Online',
+                                                    'booking_date' => '2024-08-01',
+                                                    'amount' => '$90.50',
+                                                    'status' => 'Completed',
+                                                ],
+                                                [
+                                                    'id' => 104,
+                                                    'customer_name' => 'Diana Lee',
+                                                    'type_of_booking' => 'Phone',
+                                                    'booking_date' => '2024-08-10',
+                                                    'amount' => '$55.00',
+                                                    'status' => 'Cancelled',
+                                                ],
                                             ];
 
                                             foreach ($history_data as $history) {
-                                                echo '<tr id="history-' . $history['id'] . '">';
+                                                echo '<tr id="history-' . $history['id'] . '" class="history-row">';
                                                 echo '<td>' . htmlspecialchars($history['id'], ENT_QUOTES) . '</td>';
                                                 echo '<td>' . htmlspecialchars($history['customer_name'], ENT_QUOTES) . '</td>';
                                                 echo '<td>' . htmlspecialchars($history['type_of_booking'], ENT_QUOTES) . '</td>';
@@ -239,25 +265,27 @@
             Swal.fire({
                 title: 'Booking Details',
                 html: `<table style="width:100%; border-collapse:collapse;">
-                            <tr><td style="padding:8px; font-weight:bold;">Booking ID:</td><td style="padding:8px;">${historyData.id}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Customer Name:</td><td style="padding:8px;">${historyData.customer_name}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Contact Number:</td><td style="padding:8px;">${historyData.contact_number}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Email:</td><td style="padding:8px;">${historyData.email}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Type of Booking:</td><td style="padding:8px;">${historyData.type_of_booking}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Booking Date:</td><td style="padding:8px;">${historyData.booking_date}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Amount:</td><td style="padding:8px;">${historyData.amount}</td></tr>
-                            <tr><td style="padding:8px; font-weight:bold;">Status:</td><td style="padding:8px;">${historyData.status}</td></tr>
-                        </table>`,
+                                        <tr><td style="padding:8px; font-weight:bold;">Booking ID:</td><td style="padding:8px;">${historyData.id}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Customer Name:</td><td style="padding:8px;">${historyData.customer_name}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Contact Number:</td><td style="padding:8px;">${historyData.contact_number}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Email:</td><td style="padding:8px;">${historyData.email}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Type of Booking:</td><td style="padding:8px;">${historyData.type_of_booking}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Booking Date:</td><td style="padding:8px;">${historyData.booking_date}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Amount:</td><td style="padding:8px;">${historyData.amount}</td></tr>
+                                        <tr><td style="padding:8px; font-weight:bold;">Status:</td><td style="padding:8px;">${historyData.status}</td></tr>
+                                    </table>`,
                 showCloseButton: true,
                 showConfirmButton: false,
                 focusConfirm: false,
             });
         }
 
-        function searchHistory() {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const tableRows = document.getElementById('history-table-body').getElementsByTagName('tr');
+        const searchInput = document.getElementById('search-input');
+        const historyTableBody = document.getElementById('history-table-body');
+        const tableRows = historyTableBody.getElementsByTagName('tr');
 
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
             for (let i = 0; i < tableRows.length; i++) {
                 const customerNameCell = tableRows[i].getElementsByTagName('td')[1]; // Index 1 for Customer Name
                 if (customerNameCell) {
@@ -269,7 +297,7 @@
                     }
                 }
             }
-        }
+        });
     </script>
 </body>
 </html>

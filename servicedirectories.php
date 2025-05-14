@@ -12,8 +12,8 @@
     <style>
         .service-table-wrapper {
             margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
             overflow: hidden;
             background-color: #fff;
         }
@@ -22,64 +22,76 @@
             border-collapse: collapse;
         }
         .service-table th, .service-table td {
-            padding: 12px 15px;
+            padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
         .service-table th {
-            background-color: #f0f0f0;
-            font-weight: bold;
+            background-color: #f7f7f7;
+            font-weight: 600;
+            color: #333;
         }
         .service-table tbody tr:last-child td {
             border-bottom: none;
         }
         .action-buttons {
-            display: flex; /* Use flexbox for button layout */
-            /* Removed: flex-direction: column;  */
-            align-items: flex-start; /* Align items to the start (top in row direction) */
+            display: flex;
+            align-items: center;
         }
-
         .action-buttons button {
             padding: 10px 16px;
-            margin-right: 5px;
+            margin-right: 8px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            /* Removed: margin-bottom: 5px; */ /* Remove bottom margin */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .action-buttons button.edit {
             background-color: #007bff;
             color: white;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
         }
         .action-buttons button.delete {
             background-color: #dc3545;
             color: white;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
         }
         .action-buttons button.edit:hover {
             background-color: #0056b3;
+            box-shadow: 0 3px 6px rgba(0, 86, 179, 0.3);
         }
         .action-buttons button.delete:hover {
             background-color: #c82333;
+            box-shadow: 0 3px 6px rgba(200, 35, 51, 0.3);
         }
         .swal2-input, .swal2-select {
             margin: 0.5em 0;
             width: 100%;
+            padding: 0.8em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
         .btn-primary {
             color: #fff;
             background-color: #007bff;
             border-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
         }
         .btn-primary:hover {
-            color: #fff;
             background-color: #0056b3;
-            border-color: #004080;
+            border-color: #0056b3;
+            box-shadow: 0 3px 6px rgba(0, 86, 179, 0.3);
         }
         .btn-primary:focus, .btn-primary.focus {
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
@@ -88,40 +100,65 @@
             color: #fff;
             background-color: #007bff;
             border-color: #007bff;
+            opacity: 0.7;
+            cursor: not-allowed;
+            box-shadow: none;
         }
         .btn-primary:active, .btn-primary.active {
-            color: #fff;
             background-color: #0056b3;
-            border-color: #004080;
+            border-color: #0056b3;
         }
-        .search-container {
-            margin-bottom: 20px;
+        .service-header {
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
         }
         .search-input {
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
             margin-right: 10px;
-            width: 200px;
-            font-size: 0.9rem;
-        }
-        .search-button {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .search-button:hover {
-            background-color: #0056b3;
+            width: 200px; /* Set a fixed, normal width here */
+            font-size: 1rem;
+            box-sizing: border-box;
         }
         .add-service-button {
-            margin-left: auto;
+            flex-shrink: 0;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .service-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-container {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .search-input {
+                margin-right: 0;
+            }
+            .add-service-button {
+                width: 100%;
+            }
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-buttons button {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            .service-table th, .service-table td {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -147,12 +184,16 @@
                                     <div class="nk-block-head-content">
                                         <h3 class="nk-block-title page-title">Service Directories</h3>
                                     </div>
-                                    <div class="nk-block-head-content">
-                                        <button class="btn btn-primary add-service-button" onclick="addService()">Add Service</button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="nk-block">
+                                <div class="service-header">
+                                    <div class="search-container">
+                                        <input type="text" id="search-input" class="search-input"
+                                               placeholder="Search by Service Name">
+                                    </div>
+                                    <button class="btn btn-primary add-service-button" onclick="addService()">Add Service</button>
+                                </div>
                                 <div class="service-table-wrapper">
                                     <table class="service-table">
                                         <thead>
@@ -175,6 +216,21 @@
                                                     'id' => 2,
                                                     'name' => 'Haircut',
                                                     'description' => 'Professional haircut service',
+                                                ],
+                                                [
+                                                    'id' => 3,
+                                                    'name' => 'Manicure',
+                                                    'description' => 'Classic manicure service',
+                                                ],
+                                                [
+                                                    'id' => 4,
+                                                    'name' => 'Pedicure',
+                                                    'description' => 'Soothing pedicure service',
+                                                ],
+                                                [
+                                                    'id' => 5,
+                                                    'name' => 'Facial',
+                                                    'description' => 'Deep cleansing facial',
                                                 ],
                                             ];
 
@@ -205,6 +261,21 @@
     <script src="js/js2.js"></script>
     <script src="js/js3.js"></script>
     <script>
+        const searchInput = document.getElementById('search-input');
+        const serviceTableBody = document.getElementById('service-table-body');
+        const tableRows = serviceTableBody.getElementsByTagName('tr');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            for (let i = 0; i < tableRows.length; i++) {
+                const serviceNameCell = tableRows[i].getElementsByTagName('td')[0]; // Index 0 for Name
+                if (serviceNameCell) {
+                    const serviceName = serviceNameCell.textContent.toLowerCase();
+                    tableRows[i].style.display = serviceName.includes(searchTerm) ? '' : 'none';
+                }
+            }
+        });
+
         function addService() {
             Swal.fire({
                 title: 'Add Service',
@@ -223,45 +294,23 @@
                 if (result.isConfirmed) {
                     const serviceData = result.value;
                     if (serviceData.name && serviceData.description) {
-                        // In a real application, you would make an AJAX call here
-                        // to add the service to the database.
                         console.log('Service Data:', serviceData);
-
                         Swal.fire(
                             'Service Added!',
                             'The service has been added successfully.',
                             'success'
                         );
-
-                        // For demonstration, let's add the new service to the table (without AJAX)
                         const newServiceRow = document.createElement('tr');
                         newServiceRow.innerHTML = `
                             <td>${serviceData.name}</td>
                             <td>${serviceData.description}</td>
                             <td class="action-buttons">
-                                <button class="edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="delete"><i class="bi bi-trash3"></i></button>
+                                <button class="edit" onclick="editService(${Date.now()})"><i class="bi bi-pencil-square"></i></button>
+                                <button class="delete" onclick="deleteService(${Date.now()}, '${serviceData.name}')"><i class="bi bi-trash3"></i></button>
                             </td>
                         `;
-                        document.getElementById('service-table-body').appendChild(newServiceRow);
-                         // Get the newly added row
-                        const newRow = document.getElementById('service-table-body').lastElementChild;
-
-                        // Find the edit and delete buttons within the new row.
-                        const editButton = newRow.querySelector('.edit');
-                        const deleteButton = newRow.querySelector('.delete');
-
-                        // Attach the event listeners.  Pass the new row's ID (or a generated ID)
-                        editButton.addEventListener('click', () => {
-                            const rowId =  newRow.rowIndex;
-                            editService(rowId);
-                        });
-                        deleteButton.addEventListener('click', () => {
-                            const rowId = newRow.rowIndex;
-                            const serviceName = serviceData.name;
-                            deleteService(rowId, serviceName);
-                        });
-
+                        newServiceRow.id = `service-${Date.now()}`; // Assign a unique ID
+                        serviceTableBody.appendChild(newServiceRow);
                     } else {
                         Swal.fire(
                             'Error',
@@ -280,8 +329,8 @@
                 return;
             }
 
-            const name = rowToEdit.cells[0].textContent;  // get the name from the table
-            const description = rowToEdit.cells[1].textContent; // and description
+            const name = rowToEdit.cells[0].textContent;
+            const description = rowToEdit.cells[1].textContent;
 
             Swal.fire({
                 title: 'Edit Service',
@@ -300,17 +349,12 @@
                 if (result.isConfirmed) {
                     const updatedServiceData = result.value;
                     if (updatedServiceData.name && updatedServiceData.description) {
-                        // In a real application, you would make an AJAX call here
-                        // to update the service data in the database.
                         console.log('Updated Service Data:', updatedServiceData);
-
                         Swal.fire(
                             'Service Updated!',
                             'The service details have been updated.',
                             'success'
                         );
-
-                        // Update the table row
                         rowToEdit.cells[0].textContent = updatedServiceData.name;
                         rowToEdit.cells[1].textContent = updatedServiceData.description;
                     } else {
@@ -325,7 +369,7 @@
         }
 
         function deleteService(id, name) {
-             Swal.fire({
+            Swal.fire({
                 title: 'Delete Service',
                 text: `Are you sure you want to delete ${name}?`,
                 icon: 'warning',
@@ -335,40 +379,18 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // In a real application, you would make an AJAX call here
-                    // to delete the service from the database.
                     console.log('Delete Service ID:', id);
-
                     Swal.fire(
                         'Service Deleted!',
                         `The service ${name} has been deleted.`,
                         'success'
                     );
-
-                    // For demonstration, let's remove the table row (without AJAX)
                     const rowToDelete = document.getElementById(`service-${id}`);
                     if (rowToDelete) {
-                         rowToDelete.remove();
+                        rowToDelete.remove();
                     }
                 }
             });
-        }
-
-        function searchServices() {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const tableRows = document.getElementById('service-table-body').getElementsByTagName('tr');
-
-            for (let i = 0; i < tableRows.length; i++) {
-                const serviceNameCell = tableRows[i].getElementsByTagName('td')[0]; // Index 0 for Name
-                if (serviceNameCell) {
-                    const serviceName = serviceNameCell.textContent.toLowerCase();
-                    if (serviceName.includes(searchTerm)) {
-                        tableRows[i].style.display = ''; // Show the row
-                    } else {
-                        tableRows[i].style.display = 'none'; // Hide the row
-                    }
-                }
-            }
         }
     </script>
 </body>

@@ -11,105 +11,139 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <style>
         .form-container {
-            max-width: 800px; /* Increased max-width for two columns */
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #fff; /* White background */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+            border: 1px solid #eee;
+        }
+        .form-title {
+            color: #333;
+            margin-bottom: 30px; /* Increased bottom margin */
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Space between icon and text */
+        }
+        .form-title i {
+            font-size: 1.8rem; /* Larger icon */
+            color: #007bff; /* Primary color for icon */
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px; /* Increased bottom margin */
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 10px; /* Increased bottom margin */
+            font-weight: 600;
             color: #555;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 14px; /* Increased padding */
+            border: 1px solid #ccc;
+            border-radius: 8px; /* More rounded input fields */
             font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: #007bff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-
         .btn-primary {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 14px 28px; /* Increased padding for button */
+            border-radius: 8px; /* Rounded button */
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             width: 100%;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Subtle button shadow */
         }
         .btn-primary:hover {
             background-color: #0056b3;
+            box-shadow: 0 3px 6px rgba(0, 86, 179, 0.3); /* Slightly more pronounced hover shadow */
         }
         .btn-primary:disabled {
             background-color: #007bff;
-            opacity: 0.6;
+            opacity: 0.7;
             cursor: not-allowed;
+            box-shadow: none;
         }
         .alert {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
+            margin-top: 25px; /* Increased top margin */
+            padding: 18px; /* Increased padding for alert */
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500; /* Slightly bolder alert text */
         }
         .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #fdecea;
+            color: #a94442;
+            border: 1px solid #e74c3c;
         }
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #e6ffe9;
+            color: #3c763d;
+            border: 1px solid #2ecc71;
         }
 
-        /* Added to align the title to the left */
-        .nk-block-head-content {
-            display: flex;
-            justify-content: space-between; /* Pushes title to the left */
-            align-items: center;
-        }
-
-        .page-title {
-            margin-right: auto; /* Ensures title goes to the far left */
-        }
-
-        /* Added for two-column layout */
         .form-row {
             display: flex;
             flex-wrap: wrap;
-            margin-right: -10px;
-            margin-left: -10px;
+            margin-right: -15px;
+            margin-left: -15px;
         }
 
         .form-col {
-            flex: 0 0 50%; /* Each column takes up 50% of the width */
+            flex: 0 0 50%;
             max-width: 50%;
-            padding-right: 10px;
-            padding-left: 10px;
-            box-sizing: border-box; /* Include padding in element's total width and height */
+            padding-right: 15px;
+            padding-left: 15px;
+            box-sizing: border-box;
         }
-        /*Added media query for screens smaller than 768px*/
+
         @media (max-width: 768px) {
             .form-col {
                 flex: 0 0 100%;
                 max-width: 100%;
             }
-            .form-container{
-                max-width: 400px;
+            .form-container {
+                margin-top: 20px;
+                padding: 25px;
             }
+            .form-title {
+                font-size: 1.5rem; /* Adjust title size on smaller screens */
+                gap: 8px;
+            }
+            .form-title i {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Interactive placeholder effect */
+        .form-group input::placeholder, .form-group select::placeholder {
+            color: #aaa;
+            opacity: 1;
+        }
+
+        .form-group input:-ms-input-placeholder, .form-group select:-ms-input-placeholder {
+            color: #aaa;
+        }
+
+        .form-group input::-ms-input-placeholder, .form-group select::-ms-input-placeholder {
+            color: #aaa;
+        }
+
+        .form-group input:focus::placeholder, .form-group select:focus::placeholder {
+            color: transparent;
         }
     </style>
 </head>
@@ -139,18 +173,19 @@
                             </div>
                             <div class="nk-block">
                                 <div class="form-container">
+                                    <h2 class="form-title"><i class="bi bi-person-plus-fill"></i> Enter Role Details</h2>
                                     <form id="create-role-form">
                                         <div class="form-row">
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="firstName">First Name</label>
-                                                    <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                                                    <input type="text" id="firstName" name="firstName" placeholder="Your first name" required>
                                                 </div>
                                             </div>
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="lastName">Last Name</label>
-                                                    <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                                                    <input type="text" id="lastName" name="lastName" placeholder="Your last name" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,13 +193,13 @@
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="email">Email</label>
-                                                    <input type="email" id="email" name="email" placeholder="Enter email" required>
+                                                    <input type="email" id="email" name="email" placeholder="Your email address" required>
                                                 </div>
                                             </div>
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="phone">Phone Number</label>
-                                                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                                                    <input type="tel" id="phone" name="phone" placeholder="Your phone number" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,13 +207,13 @@
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="address">Address</label>
-                                                    <input type="text" id="address" name="address" placeholder="Enter address">
+                                                    <input type="text" id="address" name="address" placeholder="Your current address">
                                                 </div>
                                             </div>
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="roleName">Role Name</label>
-                                                    <input type="text" id="roleName" name="roleName" placeholder="Enter role name" required>
+                                                    <input type="text" id="roleName" name="roleName" placeholder="Name of the role" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,7 +222,7 @@
                                                 <div class="form-group">
                                                     <label for="role">Role</label>
                                                     <select id="role" name="role">
-                                                        <option value="">Select Role</option>
+                                                        <option value="" disabled selected>Select a role</option>
                                                         <option value="Admin">Admin</option>
                                                         <option value="Receptionist">Receptionist</option>
                                                         <option value="Staff">Staff</option>
@@ -198,7 +233,7 @@
                                             <div class="form-col">
                                                 <div class="form-group">
                                                     <label for="description">Description</label>
-                                                    <input type="text" id="description" name="description" placeholder="Enter role description">
+                                                    <input type="text" id="description" name="description" placeholder="Brief description of the role">
                                                 </div>
                                             </div>
                                         </div>
@@ -239,7 +274,7 @@
                 if (!firstName) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please enter first name.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -248,7 +283,7 @@
                 if (!lastName) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please enter last name.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -258,7 +293,7 @@
                 if (!email) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please enter email.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -267,7 +302,7 @@
                 if (!phone) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please enter phone number.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -277,7 +312,7 @@
                 if (!roleName) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please enter a role name.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -287,7 +322,7 @@
                 if (!role) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
+                        title: 'Oops...',
                         text: 'Please select a role.',
                     });
                     createRoleButton.prop('disabled', false);
@@ -310,8 +345,10 @@
                         // Simulate successful role creation
                         Swal.fire({
                             icon: 'success',
-                            title: 'Success',
+                            title: 'Success!',
                             text: `Role "${role}" created successfully!`,
+                            showConfirmButton: false,
+                            timer: 1500
                         }).then(() => {
                             // In a real application, you might redirect to another page
                             $('#firstName').val('');

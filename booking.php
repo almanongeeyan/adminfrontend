@@ -24,6 +24,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <style>
+        .booking-management-header {
+            display: flex;
+            justify-content: flex-start; /* Align items to the left */
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .booking-search {
+            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Add some spacing between search and potential buttons */
+        }
+        .booking-search input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 300px; /* Adjust width as needed for "normal" size */
+        }
         .booking-table {
             width: 100%;
             border-collapse: collapse;
@@ -83,7 +101,7 @@
                         <div class="nk-menu-trigger d-xl-none ms-n1 me-3">
                             <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><i class="fa-solid fa-bars"></i></a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -100,6 +118,13 @@
                         </div>
 
                         <div class="nk-block">
+                            <div class="booking-management-header">
+                                <div class="booking-search">
+                                    <input type="text" id="searchInput" placeholder="Search bookings...">
+                                </div>
+                                <div>
+                                    </div>
+                            </div>
                             <table class="booking-table">
                                 <thead>
                                     <tr>
@@ -112,7 +137,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="bookingsTableBody">
                                     <?php
                                     // Example booking data (replace with your database fetch)
                                     $bookingsData = [
@@ -137,11 +162,25 @@
                                             'type' => 'Nail Care',
                                             'date' => '2025-05-18',
                                         ],
+                                        [
+                                            'name' => 'Anna Williams',
+                                            'contact' => '111-222-3333',
+                                            'email' => 'anna.williams@example.com',
+                                            'type' => 'Haircut',
+                                            'date' => '2025-05-20',
+                                        ],
+                                        [
+                                            'name' => 'David Brown',
+                                            'contact' => '444-555-6666',
+                                            'email' => 'david.brown@example.com',
+                                            'type' => 'Massage',
+                                            'date' => '2025-05-22',
+                                        ],
                                         // Add more booking data here
                                     ];
 
                                     foreach ($bookingsData as $booking) {
-                                        echo '<tr>';
+                                        echo '<tr class="booking-row">';
                                         echo '<td>' . $booking['name'] . '</td>';
                                         echo '<td>' . $booking['contact'] . '</td>';
                                         echo '<td>' . $booking['email'] . '</td>';
@@ -192,9 +231,46 @@
                 // In a real application, you would make an AJAX call here
                 // to update the booking status in your database.
                 console.log(`Booking for ${bookingName} updated to: ${status}`);
+                // You might want to reload the table or update the row visually here
             }
         });
     }
+
+    const searchInput = document.getElementById('searchInput');
+    const bookingsTableBody = document.getElementById('bookingsTableBody');
+    const tableRows = bookingsTableBody.querySelectorAll('tr.booking-row');
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        tableRows.forEach(row => {
+            const name = row.cells[0].textContent.toLowerCase();
+            const contact = row.cells[1].textContent.toLowerCase();
+            const email = row.cells[2].textContent.toLowerCase();
+            const type = row.cells[3].textContent.toLowerCase();
+            const date = row.cells[4].textContent.toLowerCase();
+
+            if (
+                name.includes(searchTerm) ||
+                contact.includes(searchTerm) ||
+                email.includes(searchTerm) ||
+                type.includes(searchTerm) ||
+                date.includes(searchTerm)
+            ) {
+                row.style.display = ''; // Show the row
+            } else {
+                row.style.display = 'none'; // Hide the row
+            }
+        });
+    });
+
+    // Optional: Add event listener for Enter key in the search input (for those who prefer pressing Enter)
+    searchInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            // You can optionally trigger some visual feedback or action here if needed
+            // since the filtering happens automatically on input.
+            console.log('Search triggered by Enter key');
+        }
+    });
 </script>
 </body>
 

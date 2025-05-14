@@ -2,7 +2,7 @@
 <html lang="zxx" class="js">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <meta charset="utf-8" />
+    <meta charset="utf-8 />
     <meta name="author" content="Softnio" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers." />
@@ -27,6 +27,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     <style>
+        .customer-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .customer-search {
+            display: flex;
+            align-items: center;
+        }
+        .customer-search input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 250px; /* Set a normal width */
+        }
+        .customer-search button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .customer-search button:hover {
+            background-color: #0056b3;
+        }
         .customer-table-wrapper {
             margin-top: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -135,12 +164,17 @@
                                     <div class="nk-block-head-content">
                                         <h3 class="nk-block-title page-title">Customer Directories</h3>
                                     </div>
-                                    <div class="nk-block-head-content">
-                                        <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="nk-block">
+                                <div class="customer-management-header">
+                                    <div class="customer-search">
+                                        <input type="text" id="searchInput" placeholder="Search customers...">
+                                        </div>
+                                    <div class="">
+                                        <button class="btn btn-primary" onclick="addCustomer()">Add Customer</button>
+                                    </div>
+                                </div>
                                 <div class="customer-table-wrapper">
                                     <table class="customer-table">
                                         <thead>
@@ -176,10 +210,28 @@
                                                     'date_of_booking' => '2024-07-29',
                                                     'payment' => '$50',
                                                 ],
+                                                [
+                                                    'id' => 3,
+                                                    'name' => 'Peter Jones',
+                                                    'contact_number' => '555-111-2222',
+                                                    'email' => 'peter.jones@example.com',
+                                                    'type_of_booking' => 'Online',
+                                                    'date_of_booking' => '2024-07-30',
+                                                    'payment' => '$75',
+                                                ],
+                                                [
+                                                    'id' => 4,
+                                                    'name' => 'Alice Brown',
+                                                    'contact_number' => '333-444-5555',
+                                                    'email' => 'alice.brown@example.com',
+                                                    'type_of_booking' => 'Walk-in',
+                                                    'date_of_booking' => '2024-08-01',
+                                                    'payment' => '$60',
+                                                ],
                                             ];
 
                                             foreach ($customers as $customer) {
-                                                echo '<tr id="customer-' . $customer['id'] . '">';
+                                                echo '<tr id="customer-' . $customer['id'] . '" class="customer-row">';
                                                 echo '<td>' . htmlspecialchars($customer['name'], ENT_QUOTES) . '</td>';
                                                 echo '<td>' . htmlspecialchars($customer['contact_number'], ENT_QUOTES) . '</td>';
                                                 echo '<td>' . htmlspecialchars($customer['email'], ENT_QUOTES) . '</td>';
@@ -210,85 +262,74 @@
     <script src="js/js3.js"></script>
     <script>
         function addCustomer() {
-    Swal.fire({
-        title: 'Add Customer',
-        html: `<input id="name" class="swal2-input" placeholder="Name">
-               <input id="contact_number" class="swal2-input" placeholder="Contact Number">
-               <input id="email" class="swal2-input" placeholder="Email">
-               <select id="type_of_booking" class="swal2-select">
-                   <option value="">Select Booking Type</option>
-                   <option value="Online">Online</option>
-                   <option value="Walk-in">Walk-in</option>
-               </select>
-               <input id="date_of_booking" class="swal2-datepicker" placeholder="Date of Booking" readonly>
-               <input id="payment" class="swal2-input" placeholder="Payment">`,
-        preConfirm: () => {
-            return {
-                name: document.getElementById('name').value,
-                contact_number: document.getElementById('contact_number').value,
-                email: document.getElementById('email').value,
-                type_of_booking: document.getElementById('type_of_booking').value,
-                date_of_booking: document.getElementById('date_of_booking').value,
-                payment: document.getElementById('payment').value,
-            };
-        },
-        didOpen: () => {
-            // Initialize the datepicker *after* the modal is open
-            $('#date_of_booking').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
+            Swal.fire({
+                title: 'Add Customer',
+                html: `<input id="name" class="swal2-input" placeholder="Name">
+                       <input id="contact_number" class="swal2-input" placeholder="Contact Number">
+                       <input id="email" class="swal2-input" placeholder="Email">
+                       <select id="type_of_booking" class="swal2-select">
+                           <option value="">Select Booking Type</option>
+                           <option value="Online">Online</option>
+                           <option value="Walk-in">Walk-in</option>
+                       </select>
+                       <input id="date_of_booking" class="swal2-datepicker" placeholder="Date of Booking" readonly>
+                       <input id="payment" class="swal2-input" placeholder="Payment">`,
+                preConfirm: () => {
+                    return {
+                        name: document.getElementById('name').value,
+                        contact_number: document.getElementById('contact_number').value,
+                        email: document.getElementById('email').value,
+                        type_of_booking: document.getElementById('type_of_booking').value,
+                        date_of_booking: document.getElementById('date_of_booking').value,
+                        payment: document.getElementById('payment').value,
+                    };
+                },
+                didOpen: () => {
+                    $('#date_of_booking').datepicker({
+                        format: 'yyyy-mm-dd',
+                        autoclose: true,
+                        todayHighlight: true,
+                    });
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Add',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const customerData = result.value;
+                    if (customerData.name && customerData.contact_number && customerData.email && customerData.type_of_booking && customerData.date_of_booking && customerData.payment) {
+                        console.log('Customer Data:', customerData);
+                        Swal.fire(
+                            'Customer Added!',
+                            'The customer has been added successfully.',
+                            'success'
+                        );
+                        const newCustomerRow = document.createElement('tr');
+                        newCustomerRow.innerHTML = `
+                            <td>${customerData.name}</td>
+                            <td>${customerData.contact_number}</td>
+                            <td>${customerData.email}</td>
+                            <td>${customerData.type_of_booking}</td>
+                            <td>${customerData.date_of_booking}</td>
+                            <td>${customerData.payment}</td>
+                            <td class="action-buttons">
+                                <button class="edit" onclick="editCustomer(0)">Edit</button>
+                                <button class="delete" onclick="deleteCustomer(0, '${customerData.name}')">Delete</button>
+                            </td>
+                        `;
+                        document.getElementById('customer-table-body').appendChild(newCustomerRow);
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            'Please fill in all the fields.',
+                            'error'
+                        );
+                    }
+                }
             });
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Add',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const customerData = result.value;
-            if (customerData.name && customerData.contact_number && customerData.email && customerData.type_of_booking && customerData.date_of_booking && customerData.payment) {
-                // In a real application, you would make an AJAX call here
-                // to add the customer to the database.
-                console.log('Customer Data:', customerData);
-
-                Swal.fire(
-                    'Customer Added!',
-                    'The customer has been added successfully.',
-                    'success'
-                );
-
-                // For demonstration, let's add the new customer to the table (without AJAX)
-                const newCustomerRow = document.createElement('tr');
-                newCustomerRow.innerHTML = `
-                    <td>${customerData.name}</td>
-                    <td>${customerData.contact_number}</td>
-                    <td>${customerData.email}</td>
-                    <td>${customerData.type_of_booking}</td>
-                    <td>${customerData.date_of_booking}</td>
-                    <td>${customerData.payment}</td>
-                    <td class="action-buttons">
-                        <button class="edit" onclick="editCustomer(0)">Edit</button>
-                        <button class="delete" onclick="deleteCustomer(0, '${customerData.name}')">Delete</button>
-                    </td>
-                `;
-                document.getElementById('customer-table-body').appendChild(newCustomerRow);
-                 // Clear the datepicker (no need to destroy and re-initialize here)
-            } else {
-                Swal.fire(
-                    'Error',
-                    'Please fill in all the fields.',
-                    'error'
-                );
-            }
         }
-    });
-}
-
 
         function editCustomer(id) {
-            // In a real application, you would fetch the customer data by ID here
-            // and pre-populate the SweetAlert form with the existing data.
-            // For demonstration, we'll use placeholder data.
             const customerData = {
                 name: 'John Doe',
                 contact_number: '123-456-7890',
@@ -311,7 +352,7 @@
                        <input id="date_of_booking_edit" class="swal2-datepicker" placeholder="Date of Booking" value="${customerData.date_of_booking}" readonly>
                        <input id="payment" class="swal2-input" placeholder="Payment" value="${customerData.payment}">`,
                 preConfirm: () => {
-                    return {
+                    return{
                         name: document.getElementById('name').value,
                         contact_number: document.getElementById('contact_number').value,
                         email: document.getElementById('email').value,
@@ -321,7 +362,6 @@
                     };
                 },
                 didOpen: () => {
-                    // Initialize the datepicker
                     $('#date_of_booking_edit').datepicker({
                         format: 'yyyy-mm-dd',
                         autoclose: true,
@@ -335,18 +375,13 @@
                 if (result.isConfirmed) {
                     const updatedCustomerData = result.value;
                     if (updatedCustomerData.name && updatedCustomerData.contact_number && updatedCustomerData.email && updatedCustomerData.type_of_booking && updatedCustomerData.date_of_booking && updatedCustomerData.payment) {
-                        // In a real application, you would make an AJAX call here
-                        // to update the customer data in the database.
                         console.log('Updated Customer Data:', updatedCustomerData);
-
                         Swal.fire(
                             'Customer Updated!',
                             'The customer details have been updated.',
                             'success'
                         );
-
-                        // For demonstration, let's update the table row (without AJAX)
-                        const rowToUpdate = document.getElementById(`customer-${id}`); // Use the id here
+                        const rowToUpdate = document.getElementById(`customer-${id}`);
                         if (rowToUpdate) {
                             rowToUpdate.innerHTML = `
                                 <td>${updatedCustomerData.name}</td>
@@ -361,17 +396,17 @@
                                 </td>
                             `;
                         }
-                         $('#date_of_booking_edit').datepicker('destroy');
+                        $('#date_of_booking_edit').datepicker('destroy');
                     } else {
                         Swal.fire(
                             'Error',
                             'Please fill in all the fields.',
                             'error'
                         );
-                         $('#date_of_booking_edit').datepicker('destroy');
+                        $('#date_of_booking_edit').datepicker('destroy');
                     }
                 } else {
-                     $('#date_of_booking_edit').datepicker('destroy');
+                    $('#date_of_booking_edit').datepicker('destroy');
                 }
             });
         }
@@ -387,17 +422,12 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // In a real application, you would make an AJAX call here
-                    // to delete the customer from the database.
                     console.log('Delete Customer ID:', id);
-
                     Swal.fire(
                         'Customer Deleted!',
                         `The customer ${name} has been deleted.`,
                         'success'
                     );
-
-                    // For demonstration, let's remove the table row (without AJAX)
                     const rowToDelete = document.getElementById(`customer-${id}`);
                     if (rowToDelete) {
                         rowToDelete.remove();
@@ -405,6 +435,42 @@
                 }
             });
         }
+
+        const searchInput = document.getElementById('searchInput');
+        const customerTableBody = document.getElementById('customer-table-body');
+        const tableRows = customerTableBody.getElementsByTagName('tr');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            for (let i = 0; i < tableRows.length; i++) {
+                const nameCell = tableRows[i].getElementsByTagName('td')[0];
+                const contactCell = tableRows[i].getElementsByTagName('td')[1];
+                const emailCell = tableRows[i].getElementsByTagName('td')[2];
+                const typeCell = tableRows[i].getElementsByTagName('td')[3];
+                const dateCell = tableRows[i].getElementsByTagName('td')[4];
+                const paymentCell = tableRows[i].getElementsByTagName('td')[5];
+
+                const name = nameCell ? nameCell.textContent.toLowerCase() : '';
+                const contact = contactCell ? contactCell.textContent.toLowerCase() : '';
+                const email = emailCell ? emailCell.textContent.toLowerCase() : '';
+                const type = typeCell ? typeCell.textContent.toLowerCase() : '';
+                const date = dateCell ? dateCell.textContent.toLowerCase() : '';
+                const payment = paymentCell ? paymentCell.textContent.toLowerCase() : '';
+
+                if (
+                    name.includes(searchTerm) ||
+                    contact.includes(searchTerm) ||
+                    email.includes(searchTerm) ||
+                    type.includes(searchTerm) ||
+                    date.includes(searchTerm) ||
+                    payment.includes(searchTerm)
+                ) {
+                    tableRows[i].style.display = '';
+                } else {
+                    tableRows[i].style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>

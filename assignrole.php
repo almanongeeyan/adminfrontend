@@ -10,10 +10,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <style>
+        .controls-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 300px;
+            box-sizing: border-box;
+        }
         .table-container {
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
             overflow: hidden;
             background-color: #fff;
         }
@@ -22,36 +36,60 @@
             border-collapse: collapse;
         }
         .permission-table th, .permission-table td {
-            padding: 12px 15px;
+            padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
         .permission-table th {
-            background-color: #f0f0f0;
-            font-weight: bold;
+            background-color: #f7f7f7;
+            font-weight: 600;
+            color: #333;
         }
         .permission-table tbody tr:last-child td {
             border-bottom: none;
         }
         .action-button {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
             white-space: nowrap;
+            transition: background-color 0.3s ease;
         }
         .action-button:hover {
             background-color: #0056b3;
         }
         .select-role-dropdown {
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 0.9rem;
-            width: 200px;
+            width: 180px;
+            box-sizing: border-box;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .controls-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .permission-table th, .permission-table td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+            .select-role-dropdown {
+                width: 100%;
+            }
+            .action-button {
+                width: 100%;
+                margin-top: 5px;
+            }
         }
     </style>
 </head>
@@ -80,6 +118,9 @@
                                 </div>
                             </div>
                             <div class="nk-block">
+                                <div class="controls-container">
+                                    <input type="text" id="search-input" class="search-input" placeholder="Search by name, email, or role">
+                                </div>
                                 <div class="table-container">
                                     <table class="permission-table">
                                         <thead>
@@ -94,7 +135,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="user-table-body">
-                                            <tr><td colspan="7" class="text-center">No users available.</td></tr>
+                                            <tr><td colspan="7" class="text-center">Loading users...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -111,18 +152,35 @@
     <script src="js/js3.js"></script>
     <script>
         $(document).ready(function() {
+            loadUsers();
+
+            $('#search-input').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                filterUsers(searchTerm);
+            });
+        });
+
+        let allUsers = []; // Store all fetched users
+
+        function loadUsers() {
             // Simulate fetching user data from a database
             const users = [
                 { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', phone: '123-456-7890', address: '123 Main St', role: 'Receptionist' },
                 { id: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@example.com', phone: '987-654-3210', address: '456 Oak Ave', role: 'Staff' },
                 { id: 3, firstName: 'Mike', lastName: 'Johnson', email: 'mike.johnson@example.com', phone: '555-123-4567', address: '789 Pine Ln', role: 'Manager' },
+                { id: 4, firstName: 'Anna', lastName: 'Williams', email: 'anna.williams@example.com', phone: '111-222-3333', address: '10 Downing St', role: 'Admin' },
+                { id: 5, firstName: 'Peter', lastName: 'Jones', email: 'peter.jones@example.com', phone: '444-555-6666', address: '7 Park Ave', role: 'Receptionist' },
             ];
+            allUsers = users;
+            populateUserTable(users);
+        }
 
+        function populateUserTable(users) {
             const userTableBody = document.getElementById('user-table-body');
             userTableBody.innerHTML = '';
 
             if (users.length === 0) {
-                userTableBody.innerHTML = '<tr><td colspan="7" class="text-center">No users available.</td></tr>';
+                userTableBody.innerHTML = '<tr><td colspan="7" class="text-center">No users found.</td></tr>';
                 return;
             }
 
@@ -135,21 +193,28 @@
                     <td>${user.phone}</td>
                     <td>${user.address}</td>
                     <td>${user.role}</td>
-                    <td><select class="select-role-dropdown" data-user-id="${user.id}">
-                        <option value="">Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Receptionist">Receptionist</option>
-                        <option value="Staff">Staff</option>
-                        <option value="Manager">Manager</option>
-                    </select>
-                    <button class="action-button" onclick="updateRole(${user.id})">Update</button></td>
+                    <td>
+                        <select class="select-role-dropdown" data-user-id="${user.id}">
+                            <option value="">Select Role</option>
+                            <option value="Admin" ${user.role === 'Admin' ? 'selected' : ''}>Admin</option>
+                            <option value="Receptionist" ${user.role === 'Receptionist' ? 'selected' : ''}>Receptionist</option>
+                            <option value="Staff" ${user.role === 'Staff' ? 'selected' : ''}>Staff</option>
+                            <option value="Manager" ${user.role === 'Manager' ? 'selected' : ''}>Manager</option>
+                        </select>
+                        <button class="action-button" onclick="updateRole(${user.id})">Update</button>
+                    </td>
                 `;
                 userTableBody.appendChild(row);
-                //set the default value of the dropdown.
-                const roleDropdown = row.querySelector('.select-role-dropdown');
-                roleDropdown.value = user.role;
             });
-        });
+        }
+
+        function filterUsers(searchTerm) {
+            const filteredUsers = allUsers.filter(user => {
+                const searchString = `${user.firstName} ${user.lastName} ${user.email} ${user.role}`.toLowerCase();
+                return searchString.includes(searchTerm);
+            });
+            populateUserTable(filteredUsers);
+        }
 
         function updateRole(userId) {
             const roleDropdown = document.querySelector(`.select-role-dropdown[data-user-id="${userId}"]`);
@@ -164,9 +229,6 @@
                 return;
             }
 
-            // In a real application, you would send an AJAX request to update the user's role in the database
-            // For this example, we'll just simulate a successful update
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: `Do you want to update the role to ${newRole}?`,
@@ -177,17 +239,20 @@
                 confirmButtonText: 'Yes, update it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Simulate updating the role
-                    // In a real application, you would update the database
+                    // Simulate updating the role in the 'allUsers' array
+                    const userIndex = allUsers.findIndex(user => user.id === userId);
+                    if (userIndex !== -1) {
+                        allUsers[userIndex].role = newRole;
+                    }
+
                     Swal.fire(
                         'Updated!',
                         'User role has been updated.',
                         'success'
                     );
-                    // Update the table cell directly
-                    const roleCell = roleDropdown.parentElement.parentElement.querySelector('td:nth-child(6)'); //gets the role cell
+                    // Update the table cell directly (optional, as filtering will also reflect changes)
+                    const roleCell = roleDropdown.parentElement.parentElement.querySelector('td:nth-child(6)');
                     roleCell.textContent = newRole;
-
                 }
             });
         }
