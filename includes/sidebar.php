@@ -1,15 +1,13 @@
 <div class="nk-sidebar is-light nk-sidebar-fixed" data-content="sidebarMenu">
     <div class="nk-sidebar-element nk-sidebar-head">
         <div class="nk-sidebar-brand">
-            <a href="index.php" class="logo-link nk-sidebar-logo">
-                <img class="logo-light logo-img" src="images/sidebar.png" alt="logo" />
-                <img class="logo-dark logo-img" src="images/sidebar.png" alt="logo-dark" />
-                <img class="logo-small logo-img logo-img-small" src="images/sidebar.png" alt="logo-small" />
-            </a>
-        </div>
-        <div class="nk-menu-trigger me-n2">
-            <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu"><i class="bi bi-arrow-left"></i></a>
-        </div>
+                            <a href="index.php" class="logo-link nk-sidebar-logo">
+                                <img class="logo-light logo-img" src="images/logo.png" srcset="/demo9/images/logo2x.png 2x" alt="logo" />
+                                <img class="logo-dark logo-img" src="images/logo-dark.png" srcset="/demo9/images/logo-dark2x.png 2x" alt="logo-dark" />
+                                <img class="logo-small logo-img logo-img-small" src="images/logo.png" srcset="/demo9/images/logo-small2x.png 2x" alt="logo-small" />
+                            </a>
+                        </div>
+                        
     </div>
     <div class="nk-sidebar-element">
         <div class="nk-sidebar-content">

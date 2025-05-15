@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" class="js">
+<html lang="en" class="js">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta charset="utf-8" />
@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/design.css" />
+    <link rel="stylesheet" href="css/index.css" />
     <link id="skin-default" rel="stylesheet" href="../assets/css/themee1e3.css?ver=3.2.4" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -29,57 +30,33 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <style>
-        .key-metrics {
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-grid > div {
+            margin-bottom: 10px;
+        }
+        .form-grid > div:last-child {
+            margin-bottom: 0;
+        }
+        .color-picker {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            justify-content: space-around;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
         }
-        .metric-card {
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            text-align: center;
-            min-width: 200px;
-            border: 1px solid #ddd;
-            transition: 0.3s ease-in-out;
+        .color-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid #ccc;
         }
-        .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        .bookings { background: #f0f4c3; }
-        .appointments { background: #e0f7fa; }
-        .revenue { background: #fce4ec; }
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #212121;
-        }
-        .metric-label {
+        .color-description {
+            font-size: 0.9em;
             color: #555;
-            font-size: 1.1rem;
-        }
-        .calendar-container {
-            background: #fff;
-            margin-bottom: 20px; /* Adjust margin to separate from metrics */
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-x: auto; /* In case event titles are long */
-        }
-        .month-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #calendar {
-            max-width: 100%;
-            margin: 0 auto;
         }
     </style>
 </head>
@@ -121,21 +98,31 @@
                         <div class="nk-block">
                             <div class="key-metrics">
                                 <div class="metric-card bookings">
-                                    <div class="metric-value">15</div>
-                                    <div class="metric-label">Today's Bookings</div>
+                                    <i class="bi bi-calendar-event metric-icon"></i>
+                                    <div>
+                                        <div class="metric-value">15</div>
+                                        <div class="metric-label">Today's Bookings</div>
+                                    </div>
                                 </div>
                                 <div class="metric-card appointments">
-                                    <div class="metric-value">32</div>
-                                    <div class="metric-label">Upcoming Appointments</div>
+                                    <i class="bi bi-clock metric-icon"></i>
+                                    <div>
+                                        <div class="metric-value">32</div>
+                                        <div class="metric-label">Upcoming Appointments</div>
+                                    </div>
                                 </div>
                                 <div class="metric-card revenue">
-                                    <div class="metric-value">₱1,250.00</div>
-                                    <div class="metric-label">Revenue</div>
+                                    <i class="bi bi-cash-coin metric-icon"></i>
+                                    <div>
+                                        <div class="metric-value">₱1,250.00</div>
+                                        <div class="metric-label">Revenue</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="calendar-container">
                                 <h4 class="month-title">Calendar</h4>
+                                <button class="add-event-button px-4" data-toggle="modal" data-target="#addBookingModal">Add New Booking</button>
                                 <div id="calendar"></div>
                             </div>
                         </div>
@@ -144,6 +131,202 @@
             </div>
 
             <?php include 'includes/footer.php'; ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBookingModal" tabindex="-1" role="dialog" aria-labelledby="addBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookingModalLabel">Add New Booking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addBookingForm">
+                    <div class="form-grid">
+                        <div>
+                            <label for="add-title">Booking Title</label>
+                            <input type="text" class="form-control" id="add-title">
+                        </div>
+                        <div>
+                            <label for="add-customer">Customer Name</label>
+                            <select class="form-control" id="add-customer">
+                                <option value="Client One">Client One</option>
+                                <option value="Client A Corp">Client A Corp</option>
+                                <option value="Another Client">Another Client</option>
+                                <option value="Mr. Follow Up">Mr. Follow Up</option>
+                                <option value="Third Party">Third Party</option>
+                                <option value="Tech Solutions Inc.">Tech Solutions Inc.</option>
+                                <option value="Individual User">Individual User</option>
+                                <option value="Service Pro Client">Service Pro Client</option>
+                                <option value="Prime Customer">Prime Customer</option>
+                                <option value="Key Account Ltd.">Key Account Ltd.</option>
+                                <option value="Regular Patron">Regular Patron</option>
+                                <option value="New Inquiry">New Inquiry</option>
+                                <option value="Repeat Buyer">Repeat Buyer</option>
+                                <option value="Management Team">Management Team</option>
+                                <option value="Loyal Customer">Loyal Customer</option>
+                                <option value="Internal">Internal</option>
+                                <option value="Occasional Visitor">Occasional Visitor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="add-start-datetime">Start Date and Time</label>
+                            <input type="datetime-local" class="form-control" id="add-start-datetime">
+                        </div>
+                        <div>
+                            <label for="add-end-datetime">End Date and Time</label>
+                            <input type="datetime-local" class="form-control" id="add-end-datetime">
+                        </div>
+                        <div colspan="2">
+                            <label for="add-description">Description</label>
+                            <textarea class="form-control" id="add-description"></textarea>
+                        </div>
+                    </div>
+                    <div class="color-picker">
+                        <label>Color:</label>
+                        <div class="color-option">
+                            <div class="color-circle bg-danger" data-color="bg-danger" title="Urgent"></div>
+                            <span class="color-description">Urgent</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-warning" data-color="bg-warning" title="Important"></div>
+                            <span class="color-description">Important</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-info" data-color="bg-info" title="Information"></div>
+                            <span class="color-description">Information</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-primary" data-color="bg-primary" title="Normal"></div>
+                            <span class="color-description">Normal</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-success" data-color="bg-success" title="Completed"></div>
+                            <span class="color-description">Completed</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-secondary" data-color="bg-secondary" title="Secondary"></div>
+                            <span class="color-description">Secondary</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-dark" data-color="bg-dark" title="High Priority"></div>
+                            <span class="color-description">High Priority</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle" style="background-color: purple;" data-color="purple-event" title="Meeting"></div>
+                            <span class="color-description">Meeting</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="add-color" value="bg-primary">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveNewBooking">Create Booking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editBookingModal" tabindex="-1" role="dialog" aria-labelledby="editBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBookingModalLabel">Edit Booking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editBookingForm">
+                    <input type="hidden" id="edit-booking-id">
+                    <div class="form-grid">
+                        <div>
+                            <label for="edit-title">Booking Title</label>
+                            <input type="text" class="form-control" id="edit-title">
+                        </div>
+                        <div>
+                            <label for="edit-customer">Customer Name</label>
+                            <select class="form-control" id="edit-customer">
+                                <option value="Client One">Client One</option>
+                                <option value="Client A Corp">Client A Corp</option>
+                                <option value="Another Client">Another Client</option>
+                                <option value="Mr. Follow Up">Mr. Follow Up</option>
+                                <option value="Third Party">Third Party</option>
+                                <option value="Tech Solutions Inc.">Tech Solutions Inc.</option>
+                                <option value="Individual User">Individual User</option>
+                                <option value="Service Pro Client">Service Pro Client</option>
+                                <option value="Prime Customer">Prime Customer</option>
+                                <option value="Key Account Ltd.">Key Account Ltd.</option>
+                                <option value="Regular Patron">Regular Patron</option>
+                                <option value="New Inquiry">New Inquiry</option>
+                                <option value="Repeat Buyer">Repeat Buyer</option>
+                                <option value="Management Team">Management Team</option>
+                                <option value="Loyal Customer">Loyal Customer</option>
+                                <option value="Internal">Internal</option>
+                                <option value="Occasional Visitor">Occasional Visitor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="edit-start-datetime">Start Date and Time</label>
+                            <input type="datetime-local" class="form-control" id="edit-start-datetime">
+                        </div>
+                        <div>
+                            <label for="edit-end-datetime">End Date and Time</label>
+                            <input type="datetime-local" class="form-control" id="edit-end-datetime">
+                        </div>
+                        <div colspan="2">
+                            <label for="edit-description">Description</label>
+                            <textarea class="form-control" id="edit-description"></textarea>
+                        </div>
+                    </div>
+                    <div class="color-picker">
+                        <label>Color:</label>
+                        <div class="color-option">
+                            <div class="color-circle bg-danger" data-color="bg-danger" title="Urgent"></div>
+                            <span class="color-description">Urgent</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-warning" data-color="bg-warning" title="Important"></div>
+                            <span class="color-description">Important</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-info" data-color="bg-info" title="Information"></div>
+                            <span class="color-description">Information</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-primary" data-color="bg-primary" title="Normal"></div>
+                            <span class="color-description">Normal</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-success" data-color="bg-success" title="Completed"></div>
+                            <span class="color-description">Completed</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-secondary" data-color="bg-secondary" title="Secondary"></div>
+                            <span class="color-description">Secondary</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle bg-dark" data-color="bg-dark" title="High Priority"></div>
+                            <span class="color-description">High Priority</span>
+                        </div>
+                        <div class="color-option">
+                            <div class="color-circle" style="background-color: purple;" data-color="purple-event" title="Meeting"></div>
+                            <span class="color-description">Meeting</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="edit-color">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteBooking">Delete Booking</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="updateBooking">Update Booking</button>
+            </div>
         </div>
     </div>
 </div>
@@ -158,104 +341,164 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            events: [
-                { id: '1', title: 'Formal Booking #1', start: '2025-01-15', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 1', customer: 'Client One', eventStarts: '2025-01-15', eventEnds: '2025-01-15' } },
-                { id: '2', title: 'Meeting with Client A', start: '2025-01-20', className: 'bg-info text-white p-1 rounded', extendedProps: { description: 'Discuss project Alpha', customer: 'Client A Corp', eventStarts: '2025-01-20', eventEnds: '2025-01-20' } },
-                { id: '3', title: 'Formal Booking #2', start: '2025-02-10', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 2', customer: 'Another Client', eventStarts: '2025-02-10', eventEnds: '2025-02-10' } },
-                { id: '4', title: 'Follow-up Appointment', start: '2025-02-22', className: 'bg-success text-white p-1 rounded', extendedProps: { description: 'Follow up on service B', customer: 'Mr. Follow Up', eventStarts: '2025-02-22', eventEnds: '2025-02-22' } },
-                { id: '5', title: 'Formal Booking #3', start: '2025-03-05', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 3', customer: 'Third Party', eventStarts: '2025-03-05', eventEnds: '2025-03-05' } },
-                { id: '6', title: 'Project Discussion', start: '2025-03-18', className: 'bg-warning text-dark p-1 rounded', extendedProps: { description: 'Final project review', customer: 'Tech Solutions Inc.', eventStarts: '2025-03-18', eventEnds: '2025-03-18' } },
-                { id: '7', title: 'Formal Booking #4', start: '2025-04-02', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 4', customer: 'Individual User', eventStarts: '2025-04-02', eventEnds: '2025-04-02' } },
-                { id: '8', title: 'Service Appointment', start: '2025-04-12', className: 'bg-danger text-white p-1 rounded', extendedProps: { description: 'Maintenance service call', customer: 'Service Pro Client', eventStarts: '2025-04-12', eventEnds: '2025-04-12' } },
-                { id: '9', title: 'Formal Booking #5', start: '2025-05-08', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 5', customer: 'Prime Customer', eventStarts: '2025-05-08', eventEnds: '2025-05-08' } },
-                { id: '10', title: 'Client Review', start: '2025-05-19', className: 'bg-info text-white p-1 rounded', extendedProps: { description: 'Review of Q2 performance', customer: 'Key Account Ltd.', eventStarts: '2025-05-19', eventEnds: '2025-05-19' } },
-                { id: '11', title: 'Formal Booking #6', start: '2025-06-03', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 6', customer: 'Regular Patron', eventStarts: '2025-06-03', eventEnds: '2025-06-03' } },
-                { id: '12', title: 'Consultation Session', start: '2025-06-14', className: 'bg-success text-white p-1 rounded', extendedProps: { description: 'Initial consultation', customer: 'New Inquiry', eventStarts: '2025-06-14', eventEnds: '2025-06-14' } },
-                { id: '13', title: 'Formal Booking #7', start: '2025-07-01', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 7', customer: 'Repeat Buyer', eventStarts: '2025-07-01', eventEnds: '2025-07-01' } },
-                { id: '14', title: 'Planning Meeting', start: '2025-07-11', className: 'bg-warning text-dark p-1 rounded', extendedProps: { description: 'Strategic planning session', customer: 'Management Team', eventStarts: '2025-07-11', eventEnds: '2025-07-11' } },
-                { id: '15', title: 'Formal Booking #8', start: '2025-08-06', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 8', customer: 'Loyal Customer', eventStarts: '2025-08-06', eventEnds: '2025-08-06' } },
-                { id: '16', title: 'System Maintenance', start: '2025-08-16', className: 'bg-danger text-white p-1 rounded', extendedProps: { description: 'Scheduled system downtime', customer: 'Internal', eventStarts: '2025-08-16', eventEnds: '2025-08-16' } },
-                { id: '17', title: 'Formal Booking #9', start: '2025-09-04', className: 'bg-primary text-white p-1 rounded', extendedProps: { description: 'Details for Formal Booking 9', customer: 'Occasional Visitor', eventStarts: '2025-09-04', eventEnds: '2025-09-04' } }
-            ],
+            events: [], // Initialize with an empty array for events
             eventClick: function(info) {
-                Swal.fire({
-                    title: info.event.title,
-                    html: `
-                        <div>
-                            <strong>Booking Information:</strong>
-                            <p>Description: ${info.event.extendedProps.description || 'No description'}</p>
-                            <p>Customer: ${info.event.extendedProps.customer || 'N/A'}</p>
-                            <p>Start Time: ${new Date(info.event.extendedProps.eventStarts).toLocaleDateString()}</p>
-                            <p>End Time: ${new Date(info.event.extendedProps.eventEnds).toLocaleDateString()}</p>
-                        </div>
-                    `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Edit Booking',
-                    cancelButtonText: 'Delete Booking',
-                    focusConfirm: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Handle Edit Booking action - Show the edit modal (another SweetAlert)
-                        Swal.fire({
-                            title: 'Edit Event',
-                            html: `
-                                <label for="edit-title">Event Title</label>
-                                <input id="edit-title" class="swal2-input" value="${info.event.title}">
-                                <label for="edit-start-date">Event Starts</label>
-                                <input type="date" id="edit-start-date" class="swal2-input" value="${info.event.extendedProps.eventStarts}">
-                                <label for="edit-end-date">Event Ends</label>
-                                <input type="date" id="edit-end-date" class="swal2-input" value="${info.event.extendedProps.eventEnds}">
-                                <label for="edit-description">Event Description</label>
-                                <textarea id="edit-description" class="swal2-textarea">${info.event.extendedProps.description || ''}</textarea>
-                                `,
-                            showCancelButton: true,
-                            confirmButtonText: 'Update Event',
-                            cancelButtonText: 'Discard',
-                            preConfirm: () => {
-                                return {
-                                    title: document.getElementById('edit-title').value,
-                                    startDate: document.getElementById('edit-start-date').value,
-                                    endDate: document.getElementById('edit-end-date').value,
-                                    description: document.getElementById('edit-description').value
-                                    // Get other edited values here
-                                };
-                            }
-                        }).then((editResult) => {
-                            if (editResult.isConfirmed) {
-                                const updatedEventData = editResult.value;
-                                // Update the event on the calendar (visual update only for this example)
-                                info.event.setProp('title', updatedEventData.title);
-                                info.event.setStart(updatedEventData.startDate);
-                                info.event.setEnd(updatedEventData.endDate);
-                                info.event.setExtendedProp('description', updatedEventData.description);
-                                info.event.setExtendedProp('eventStarts', updatedEventData.startDate);
-                                info.event.setExtendedProp('eventEnds', updatedEventData.endDate);
+                const event = info.event;
+                document.getElementById('edit-booking-id').value = event.id;
+                document.getElementById('edit-title').value = event.title;
+                document.getElementById('edit-description').value = event.extendedProps.description || '';
+                document.getElementById('edit-start-datetime').value = formatDateTimeLocal(event.start);
+                document.getElementById('edit-end-datetime').value = event.end ? formatDateTimeLocal(event.end) : '';
+                document.getElementById('edit-customer').value = event.extendedProps.customerName || '';
+                document.getElementById('edit-color').value = event.className ? event.className.find(className => className.startsWith('bg-') || className === 'purple-event') : 'bg-primary';
 
-                                Swal.fire('Updated!', `Booking ID: ${info.event.id} has been updated.`, 'success');
-                                // In a real application, you would make an AJAX call to update the booking in the database.
-                                console.log('Updated Booking ID:', info.event.id, updatedEventData);
-                            }
-                        });
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // Handle Delete Booking action
-                        Swal.fire(
-                            'Deleted!',
-                            `Booking ID: ${info.event.id} has been deleted.`,
-                            'success'
-                        );
-                        // In a real application, you would make an AJAX call to delete the booking from the database.
-                        console.log('Delete Booking ID:', info.event.id);
-                        info.event.remove(); // Remove the event from the calendar view
+                // Ensure the correct color is visually selected (optional visual feedback)
+                document.querySelectorAll('#editBookingModal .color-circle').forEach(circle => {
+                    circle.classList.remove('selected-color'); // You might need to add CSS for this
+                    if (circle.dataset.color === document.getElementById('edit-color').value) {
+                        circle.classList.add('selected-color');
+                    }
+                    if (circle.style.backgroundColor === 'purple' && document.getElementById('edit-color').value === 'purple-event') {
+                        circle.classList.add('selected-color');
                     }
                 });
+
+                $('#editBookingModal').modal('show');
             }
         });
         calendar.render();
+
+        // Add event button functionality (opens modal)
+        const addEventButton = document.querySelector('.add-event-button');
+        addEventButton.addEventListener('click', () => {
+            $('#addBookingModal').modal('show');
+            // Reset form fields when modal is shown
+            document.getElementById('addBookingForm').reset();
+            document.getElementById('add-color').value = 'bg-primary'; // Default color
+            // Reset color selection (optional visual feedback)
+            document.querySelectorAll('#addBookingModal .color-circle').forEach(circle => circle.classList.remove('selected-color'));
+            document.querySelector('#addBookingModal .color-circle[data-color="bg-primary"]').classList.add('selected-color');
+        });
+
+        // Color selection for add modal
+        document.querySelectorAll('#addBookingModal .color-circle').forEach(circle => {
+            circle.addEventListener('click', function() {
+                document.querySelectorAll('#addBookingModal .color-circle').forEach(c => c.classList.remove('selected-color'));
+                this.classList.add('selected-color');
+                document.getElementById('add-color').value = this.dataset.color === 'purple-event' ? 'purple-event' : this.dataset.color;
+            });
+        });
+
+        // Save new booking
+        document.getElementById('saveNewBooking').addEventListener('click', () => {
+            const title = document.getElementById('add-title').value;
+            const description = document.getElementById('add-description').value;
+            const start = document.getElementById('add-start-datetime').value;
+            const end = document.getElementById('add-end-datetime').value;
+            const customerName = document.getElementById('add-customer').value;
+            const colorClass = document.getElementById('add-color').value;
+
+            if (title && start && end && customerName) {
+                calendar.addEvent({
+                    title: title,
+                    start: start,
+                    end: end,
+                    className: [colorClass, 'text-white', 'p-1', 'rounded'],
+                    extendedProps: {
+                        description: description,
+                        customerName: customerName
+                    }
+                });
+                $('#addBookingModal').modal('hide');
+                Swal.fire('Created!', 'New booking has been added.', 'success');
+                console.log('New booking created:', { title, description, start, end, customerName, colorClass });
+                // In a real application, you would send this data to your server.
+            } else {
+                Swal.fire('Error!', 'Please fill in all required fields.', 'error');
+            }
+        });
+
+        // Color selection for edit modal
+        document.querySelectorAll('#editBookingModal .color-circle').forEach(circle => {
+            circle.addEventListener('click', function() {
+                document.querySelectorAll('#editBookingModal .color-circle').forEach(c => c.classList.remove('selected-color'));
+                this.classList.add('selected-color');
+                document.getElementById('edit-color').value = this.dataset.color === 'purple-event' ? 'purple-event' : this.dataset.color;
+            });
+        });
+
+        // Update booking
+        document.getElementById('updateBooking').addEventListener('click', () => {
+            const id = document.getElementById('edit-booking-id').value;
+            const title = document.getElementById('edit-title').value;
+            const description = document.getElementById('edit-description').value;
+            const start = document.getElementById('edit-start-datetime').value;
+            const end = document.getElementById('edit-end-datetime').value;
+            const customerName = document.getElementById('edit-customer').value;
+            const colorClass = document.getElementById('edit-color').value;
+
+            const event = calendar.getEventById(id);
+            if (event) {
+                event.setProp('title', title);
+                event.setStart(start);
+                event.setEnd(end);
+                event.setExtendedProp('description', description);
+                event.setExtendedProp('customerName', customerName);
+                event.setProp('className', [colorClass, 'text-white', 'p-1', 'rounded']);
+                $('#editBookingModal').modal('hide');
+                Swal.fire('Updated!', `Booking: ${title} has been updated.`, 'success');
+                console.log('Updated Booking:', { id, title, description, start, end, customerName, colorClass });
+                // In a real application, you would send the updated data to your server.
+            } else {
+                Swal.fire('Error!', 'Could not find the event to update.', 'error');
+            }
+        });
+
+        // Delete booking
+        document.getElementById('deleteBooking').addEventListener('click', () => {
+            const id = document.getElementById('edit-booking-id').value;
+            const event = calendar.getEventById(id);
+
+            if (event) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `You are about to delete booking: ${event.title}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.remove();
+                        $('#editBookingModal').modal('hide');
+                        Swal.fire('Deleted!', `Booking: ${event.title} has been deleted.`, 'success');
+                        console.log('Deleted Booking ID:', id);
+                        // In a real application, you would send the ID to your server for deletion.
+                    }
+                });
+            } else {
+                Swal.fire('Error!', 'Could not find the event to delete.', 'error');
+            }
+        });
+
+        // Helper function to format datetime for datetime-local input
+        function formatDateTimeLocal(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hour}:${minute}`;
+        }
     });
 </script>
 
 <script src="js/js1.js"></script>
 <script src="js/js2.js"></script>
 <script src="js/js3.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

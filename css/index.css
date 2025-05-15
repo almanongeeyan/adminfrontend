@@ -1,0 +1,291 @@
+body {
+            background-color: #f4f6f8; /* Set the background color */
+        }
+        .key-metrics {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .metric-card {
+            padding: 25px; /* Increased padding for a more spacious look */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            text-align: left; /* Align text to the left for better readability with icons */
+            min-width: 250px; /* Slightly wider minimum width */
+            border: none; /* Remove the solid border */
+            transition: 0.3s ease-in-out;
+            display: flex; /* Enable flexbox for icon and text alignment */
+            align-items: center; /* Vertically align icon and text */
+            gap: 15px; /* Space between icon and text */
+            color: #fff; /* White text for better contrast on gradient */
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .bookings {
+            background: linear-gradient(135deg, #64b5f6 0%, #2196f3 100%); /* Blue gradient */
+        }
+        .appointments {
+            background: linear-gradient(135deg, #4db6ac 0%, #009688 100%); /* Teal gradient */
+        }
+        .revenue {
+            background: linear-gradient(135deg, #f06292 0%, #e91e63 100%); /* Pink gradient */
+        }
+        .metric-icon {
+            font-size: 2rem;
+            /* Icon color will inherit from the metric-card */
+        }
+        .metric-value {
+            font-size: 1.75rem; /* Slightly smaller value for better balance */
+            font-weight: bold;
+            /* Text color will inherit from the metric-card */
+            margin-bottom: 5px; /* Space between value and label */
+        }
+        .metric-label {
+            color: #e0f7fa; /* Lighter text for the label on gradient backgrounds */
+            font-size: 1rem;
+        }
+        .calendar-container {
+            background: #fff;
+            margin-bottom: 20px; /* Adjust margin to separate from metrics */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; /* In case event titles are long */
+            position: relative; /* To position the add button and modals */
+        }
+        .month-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .add-event-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px; /* Increased padding */
+            border: none;
+            background-color: #28a745; /* Green color */
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem; /* Slightly larger font */
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s ease;
+            z-index: 11; /* Ensure it's above the calendar */
+        }
+        .add-event-button:hover {
+            background-color: #1e7e34;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 5000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 10px 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 15px 0;
+        }
+
+        .modal-footer {
+            padding: 15px 0;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="datetime-local"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        /* FullCalendar Styling (as before) */
+        .fc {
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9em;
+        }
+
+        .fc-header-toolbar {
+            margin-bottom: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10; /* Ensure header toolbar is above other elements */
+            position: relative; /* Needed for z-index to work */
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .fc-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 0.2em;
+        }
+
+        .fc-button:hover {
+            background-color: #2980b9;
+        }
+
+        .fc-button-group > .fc-button {
+            margin-right: 0;
+        }
+
+        .fc-button-group > .fc-button:not(:last-child) {
+            border-right: 1px solid #2980b9;
+        }
+
+        .fc-daygrid-day-number {
+            padding: 0.3em;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .fc-day-today {
+            background-color: #ecf0f1 !important;
+        }
+
+        .fc-event {
+            border: none !important;
+            cursor: pointer;
+            margin: 0.3em 0.2em;
+            padding: 0.5em;
+            border-radius: 5px;
+            color: white !important;
+            font-size: 0.85em;
+            text-align: center;
+            display: block; /* Ensures full width for background color */
+        }
+
+        .fc-daygrid-event-harness {
+            white-space: normal !important; /* Allows event titles to wrap */
+        }
+
+        .fc-timegrid-event {
+            border: none !important;
+            cursor: pointer;
+            margin-bottom: 0.3em;
+            border-radius: 5px;
+            color: white !important;
+            font-size: 0.85em;
+        }
+
+        .fc-timegrid-slot-minor {
+            border-top-style: dotted;
+            opacity: 0.5;
+        }
